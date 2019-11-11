@@ -8,16 +8,16 @@ const pool = new Pool({
     database: 'api',
     password: 'password',
     port: 5432,
-  })
+})
 
-  const executeQuery = (queryString, cb) => {
-      pool.query(queryString, (err, results) => {
-          if(err) {
-              console.log(err)
-          } else {
-              cb(results)
-          }
-      })
-  }
+const executeQuery = (queryString, cb) => {
+    pool.query(queryString, (err, results) => {
+        if(err) {
+            console.log(err)
+        } else {
+            cb(results)
+        }
+    })
+}
 
-  module.exports = executeQuery
+module.exports = executeQuery
