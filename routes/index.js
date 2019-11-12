@@ -1,12 +1,12 @@
 const express = require('express')
-      import executeQuery from '../db.js'
       router = express.Router()
+      db  = require('../db.js')
 
-router.get('*', (req, res) => {
-    executeQuery('select * from partners', (res) => {
-        console.log(res)
-    })
-    res.render('index')
+router.get('*', async (req, res) => {
+    const contacts = await db.executeQuery('select * from Contacts limit 10')
+    console.log(contacts.rows)
+
+    res.render('index', { contacts: contacts.rows })
 })
 
 module.exports = router

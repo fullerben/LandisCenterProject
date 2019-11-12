@@ -3,21 +3,19 @@ const { Pool, Client } = require('pg')
 // Don't push actual credentials, these are just for testing
 // Real credentials should be in a separate file
 const pool = new Pool({
-    user: 'me',
-    host: 'localhost',
-    database: 'api',
-    password: 'password',
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_DB,
+    password: process.env.DB_PASSWD,
     port: 5432,
 })
 
-const executeQuery = (queryString, cb) => {
-    pool.query(queryString, (err, results) => {
-        if(err) {
-            console.log(err)
-        } else {
-            cb(results)
-        }
-    })
+module.exports = {
+    executeQuery: (queryString) => {
+        return pool.query(queryString)
+                .then(data => {
+                    return data
+                })
+                .catch(e => console.log(e))
+    }
 }
-
-module.exports = executeQuery

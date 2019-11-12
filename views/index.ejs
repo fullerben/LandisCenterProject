@@ -1,4 +1,26 @@
 <% include partials/header %>
-<div class="main">
-    hello there friends
+<% include partials/menu %>
+<div class="main-wrapper">
+    <div class="header-1">
+        View Contacts
+    </div>
+    <div class="card-wrapper">
+        <% contacts.forEach(contact => { %>
+        <div class="card">
+            <div class="card-header">
+                Contact for <%= contact.name %>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title"><%= contact.name %></h5>
+              <p class="card-text">Email: <%= contact.email %></p>
+              <% if(contact.phone !== null) { %>
+                <p class="card-text">Phone: <%= contact.phone %> <%= contact.extension %></p>
+              <% } %>
+              <a href="#" class="btn btn-primary">Go to Organization</a>
+            </div>
+          </div>
+        <% }) %>
+    </div>
 </div>
+</body>
+</html>
