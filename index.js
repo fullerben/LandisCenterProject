@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 8080
 
 const index = require('./routes/index')
       test = require('./routes/test')
+      api = require('./routes/api')
 
 const app = express()
 
@@ -21,6 +22,7 @@ app.use(express.static(path.join(__dirname, '/client')))
 
 app.use('/', index)
 app.use('/test', test)
+app.use('/api', api)
 
 // app.use(bodyParser.json())
 // app.use(bodyParser.urlencoded({ extended: true }))

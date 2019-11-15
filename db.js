@@ -10,12 +10,24 @@ const pool = new Pool({
     port: 5432,
 })
 
+const queryTemplate = (queryString, params) => {
+    const query = {
+        text: queryString,
+        values: params === undefined ? [] : params
+    }
+
+    return pool.query(query)
+               .then(data => {
+                   return data
+               })
+               .catch(e => console.log(e))
+}
+
 module.exports = {
-    executeQuery: (queryString) => {
-        return pool.query(queryString)
-                .then(data => {
-                    return data
-                })
-                .catch(e => console.log(e))
+    executeQuery: (queryString, params) => {
+        return queryTemplate(queryString, params)
+    },
+    getContactsWithOrganizations: () => {
+        return queryTemplate('select * from contacts join organizationcontacts on contacts.email=organizationcontacts.contact_email')
     }
 }
