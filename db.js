@@ -29,5 +29,14 @@ module.exports = {
     },
     getContactsWithOrganizations: () => {
         return queryTemplate('select * from contacts join organizationcontacts on contacts.email=organizationcontacts.contact_email')
-    }
+    },
+    getAllActions: () => {
+        return queryTemplate('select * from actions')
+    },
+    getProjectActions: (project) => {
+        return queryTemplate('select * from actions join actionprojects on actions.action_id=actionprojects.action_id where project=$1', [project])
+    },
+    insertContact: (contact) => {
+        return queryTemplate('insert into contacts values($1,$2,$3,$4,$5)', [contact.name, contact.email, contact.phone, contact.secondary_phone, contact.extension])
+    },
 }
