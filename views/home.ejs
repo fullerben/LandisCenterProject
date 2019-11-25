@@ -1,0 +1,18 @@
+<% include partials/header %>
+<% include partials/menu %>
+<div class="main-wrapper">
+    <div class="card-wrapper">
+        <% actions.forEach(action => { %>
+        <div class="card">
+            <div class="card-header">
+                Upcoming Action Item for <%= action.project_name %>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Due <%= action.due_date %></h5>
+              <p class="card-text"><%= action.content %></p>
+              <a href="#" class="btn btn-primary">Go to Organization</a>
+            </div>
+          </div>
+        <% }) %>
+    </div>
+</div>

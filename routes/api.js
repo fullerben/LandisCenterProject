@@ -28,7 +28,4 @@ router.get('/actions/project/:project_name', async (req, res) => {
     res.json(project_actions)
 })
 
-
-
 module.exports = router
-

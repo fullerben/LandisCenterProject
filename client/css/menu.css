@@ -3,9 +3,33 @@
     background-color: #822433;
     display: flex;
     align-items: center;
-    padding-left: 30px;
+    padding: 0 30px;
 }
 
 .menu-wrapper .menu-label img {
     height: 40px;
+}
+
+.menu-wrapper .menu-items {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+ul {
+    list-style-type: none;
+    display: block;
+}
+
+ul li {
+    display: inline-block;
+    padding: 0 30px;
+}
+
+.menu-wrapper .menu-items ul a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.3em;
 }

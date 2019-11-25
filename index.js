@@ -9,6 +9,7 @@ dotenv.config()
 const PORT = process.env.PORT || 8080
 
 const index = require('./routes/index')
+      contacts = require('./routes/contacts')
       test = require('./routes/test')
       api = require('./routes/api')
 
@@ -21,6 +22,7 @@ app.use(express.static(path.join(__dirname, '/client')))
 
 
 app.use('/', index)
+app.use('/contacts', contacts)
 app.use('/test', test)
 app.use('/api', api)
 
