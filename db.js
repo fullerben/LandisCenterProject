@@ -37,7 +37,7 @@ module.exports = {
     	return queryTemplate('select * from projects')
     },  
     getContactsWithOrganizations: () => {
-        return queryTemplate('select * from contacts join organizationcontacts on contacts.email=organizationcontacts.contact_email order by name')
+        return queryTemplate('select * from contacts left outer join organizationcontacts on contacts.email=organizationcontacts.contact_email order by name')
     },
     getFacultyContacts: () => {
         return queryTemplate('select * from facultycontacts')
@@ -71,9 +71,6 @@ module.exports = {
     },
     getMostRecentActions: () => {
         return queryTemplate("select project_name, TO_CHAR(due_date :: DATE, 'Mon dd, yyyy') as due_date, content from projectactions join actions on actions.action_id=projectactions.action_id join projects on project=project_name order by due_date limit 5")
-    },
-    insertContact: (contact) => {
-        return queryTemplate('insert into contacts values($1,$2,$3,$4,$5)', [contact.name, contact.email, contact.phone, contact.secondary_phone, contact.extension])
     },
     insertFacultyContacts: (facultycontacts) => {
         return queryTemplate('insert into facultycontacts values($1,$2,$3)', [facultycontacts.email, facultycontacts.department, facultycontacts.involvement_type])
