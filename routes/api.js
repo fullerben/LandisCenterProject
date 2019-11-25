@@ -12,6 +12,51 @@ router.get('/contacts/all', async (req, res) => {
     res.json(contacts.rows)
 })
 
+router.get('/volunteerevents', async (req, res) => {
+    const events = await db.getVolunteerEvents()
+    res.json(events.rows)
+})
+
+router.get('/volunteerprograms', async (req, res) => {
+    const programs = await db.getVolunteerEvents()
+    res.json(programs.rows)
+})
+
+router.get('/projects', async (req, res) => {
+    const projects = await db.getProjects()
+    res.json(projects.rows)
+})
+
+router.get('/facultycontacts', async (req, res) => {
+    const contacts = await db.getFacultyContacts()
+    res.json(contacts.rows)
+})
+
+router.get('/contacts/:project_name', async (req, res) => {
+    const contacts = db.getContactsUsingProject(req.params.project_name)
+    res.json(contacts)
+})
+
+router.get('/contacts/:org', async (req, res) => {
+    const contacts = db.getContactsUsingOrganizationt(req.params.org)
+    res.json(contacts)
+})
+
+router.get('/contacts/:program', async (req, res) => {
+    const contacts = db.getContactsUsingVolunteerProgram(req.params.program)
+    res.json(contacts)
+})
+
+router.get('/contacts/:event', async (req, res) => {
+    const contacts = db.getContactsUsingVolunteerEvent(req.params.event)
+    res.json(contacts)
+})
+
+router.get('/facultycontacts/:department', async (req, res) => {
+    const contacts = db.getFacultyContactsUsingDepartment(req.params.department)
+    res.json(contacts)
+})
+
 router.post('/contacts/add', async (req, res) => {
     const contact = req.body.contact; //This will need to be parsed later for security
     db.insertContact(contact)
@@ -28,4 +73,12 @@ router.get('/actions/project/:project_name', async (req, res) => {
     res.json(project_actions)
 })
 
+router.get('/contacts/all', async (req, res) => {
+    const contacts = await db.getContactsWithOrganizations()
+    res.json(contacts.rows)
+})
+
+
+
 module.exports = router
+

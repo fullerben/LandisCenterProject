@@ -1,0 +1,3 @@
+# LandisCenterProject
+## API/DB Notes
+All the API endpoints are in routes/api.js, and all the queries live in db.js. db.js includes all the connection information for connecting to the postgres database. The default export for the module is a db object containing all of the query functions, which are all asynchronous and return promises. These methods are what are imported when the database object is included in other files. It also uses a query template to handle exceptions in the query return values. To create a new endpoint, first write the query method in db.js, and then add the endpoint URL in api.js. 
