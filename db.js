@@ -27,8 +27,35 @@ module.exports = {
     executeQuery: (queryString, params) => {
         return queryTemplate(queryString, params)
     },
+    getVolunteerPrograms: () {
+    	return queryTemplate('select * from volunteerprograms')
+    },
+    getVolunteerEvents: () {
+    	return queryTemplate('select * from volunteerEvents')
+    },  
+    getProjects: () {
+    	return queryTemplate('select * from projects')
+    },  
     getContactsWithOrganizations: () => {
         return queryTemplate('select * from contacts join organizationcontacts on contacts.email=organizationcontacts.contact_email')
+    },
+    getFacultyContacts: () => {
+        return queryTemplate('select * from facultycontacts')
+    }
+    getFacultyContactsUsingDepartment: (department) {
+    	return queryTemplate('select * from facultycontacts where department = $1', [department])
+    },
+    getContactsUsingOrganization: (org) {
+    	return queryTemplate('select * from contacts join organizationcontacts on contacts.email=organizationcontacts.contact_email where organization = $1', [org])
+    },
+    getContactsUsingProject: (name) {
+    	return queryTemplate('select * from contacts join projects on contacts.email=projects.contact_email where project_name = $1', [name])
+    },  
+    getContactsUsingVolunteerProgram: (name) {
+    	return queryTemplate('select * from contacts join volunteerprograms on contacts.email=volunteerprograms.contact_email where project_name = $1', [name])
+    },
+    getContactsUsingVolunteerEvent: (name) {
+    	return queryTemplate('select * from contacts join volunteerevents on contacts.email=volunteerevents.contact_email where event_name = $1', [name])
     },
     getAllActions: () => {
         return queryTemplate('select * from actions')
