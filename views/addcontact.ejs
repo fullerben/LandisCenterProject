@@ -1,0 +1,16 @@
+<% include partials/header %>
+<% include partials/menu %>
+
+<div class="main-wrapper">
+    <form action="/contacts/add" method="post">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Contact Name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Contact email">
+        </div>
+        <button class="btn btn-primary" type="submit">Add Contact</button>
+      </form>
+</div>
