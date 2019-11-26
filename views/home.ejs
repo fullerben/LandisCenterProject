@@ -2,17 +2,18 @@
 <% include partials/menu %>
 <div class="main-wrapper">
     <div class="card-wrapper">
-        <% actions.forEach(action => { %>
-        <div class="card">
-            <div class="card-header">
-                Upcoming Action Item for <%= action.project_name %>
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">Due <%= action.due_date %></h5>
-              <p class="card-text"><%= action.content %></p>
-              <a href="#" class="btn btn-primary">Go to Organization</a>
-            </div>
-          </div>
-        <% }) %>
+        <p class="section-title">Upcoming Action Items</p>
+        <div class="card-deck">
+            <% actions.forEach(action => { %>
+                <div class="card" style="width: 18rem;">
+                  <div class="card-body">
+                    <h5 class="card-title">Upcoming Action Item for <%= action.project_name %></h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Due <%= action.due_date %></h6>
+                    <p class="card-text"><%= action.content %></p>
+                    <a href="#" class="card-link">Mark as Done</a>
+                  </div>
+                </div>
+              <% }) %>
+        </div>
     </div>
 </div>

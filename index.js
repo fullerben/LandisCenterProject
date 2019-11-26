@@ -12,6 +12,7 @@ const index = require('./routes/index')
       contacts = require('./routes/contacts')
       test = require('./routes/test')
       api = require('./routes/api')
+      organizations = require('./routes/organizations')
 
 const app = express()
 
@@ -27,6 +28,7 @@ app.use('/', index)
 app.use('/contacts', contacts)
 app.use('/test', test)
 app.use('/api', api)
+app.use('/organizations', organizations)
 
 // app.use(bodyParser.json())
 // app.use(bodyParser.urlencoded({ extended: true }))

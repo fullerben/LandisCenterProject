@@ -100,4 +100,37 @@ module.exports = {
     insertVolunteerActions: (volunteeractions) => {
         return queryTemplate('insert into volunteeractions (partner_name, action_id) values($1,$2)', [volunteeractions.partner_name, volunteeractions.action.id])
     },
+    getOrganizationByName: (name) => {
+        return queryTemplate('select organizations.organization_name, organization_type from organizations where organizations.organization_name=$1', [name])
+    },
+    getOrganizationContacts: (name) => {
+        return queryTemplate(`select contacts.name, contacts.email, contacts.phone, contacts.secondary_phone, contacts.extension from contacts join organizationcontacts on organizationcontacts.contact_email=contacts.email where organizationcontacts.organization_name='Best Buddies'`, [name])
+    },
+    getAllActions: () => {
+        return queryTemplate('select * from actions')
+    },
+    getProjectActions: (project) => {
+        return queryTemplate('select * from actions join actionprojects on actions.action_id=actionprojects.action_id where project=$1', [project])
+    },
+    insertContact: (contact) => {
+        return queryTemplate('insert into contacts values($1,$2,$3,$4,$5)', [contact.name, contact.email, contact.phone, contact.secondary_phone, contact.extension])
+    },
+    updateActions: (action_id, new_content) => {
+        return ( 'UPDATE Actions SET content = $1 WHERE action_id = $2', [new_content, action_id] )
+    },
+    updateContactPhone: (email, new_phone) => {
+        return ( 'UPDATE Contacts SET phone = $1 WHERE email = $2', [new_phone, email] )
+    },
+    updateContactSecondaryPhone: (email, new_sec_phone) => {
+        return ( 'UPDATE Contacts SET secondary_phone = $1 WHERE email = $2', [new_sec_phone, email ] )
+    },
+    updateExtension: (email, new_ext) => {
+        return ( 'UPDATE Contacts SET extension = $1 WHERE email = $2', [new_ext, email] )
+    },
+    updateProjectStudents: (project_name, new_num) => {
+        return ( 'UPDATE Projects SET num_students = $1 WHERE project_name = $2', [new_num, project_name ] )
+    },
+    updateVolunteerEventsStudents: (event_name, event_date, new_num) => {
+        return ( 'UPDATE VolunteerEvents SET num_students = $1 WHERE event_name = $2 AND event_date = $3', [new_num, event_name, event_date] )
+    }
 }
