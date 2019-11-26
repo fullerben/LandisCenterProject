@@ -9,4 +9,14 @@ router.get('/:name', async (req, res) => {
     res.render('displayorganization', { organization: organization.rows[0], contacts: contacts.rows })
 })
 
+router.get('/add', (req, res) => {
+    res.render('insertorganizations')
+})
+
+router.post('/add', (req, res) => {
+    //const contact = scrubContact(req.body) *Don't need this* 
+    db.insertOrganizations(organizations)
+    res.redirect('/organizations/all')
+})
+
 module.exports = router
