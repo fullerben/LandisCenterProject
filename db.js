@@ -32,7 +32,10 @@ module.exports = {
     },
     getVolunteerEvents: () => {
     	return queryTemplate('select * from volunteerEvents')
-    },  
+    },
+    getUpcomingVolunteerEventsWithContact: () => {
+        return queryTemplate(`select description, event_name, contacts.name, contact_email, TO_CHAR(event_date :: DATE, 'Mon dd, yyyy') as event_date from volunteerevents join contacts on volunteerevents.contact_email=contacts.email order by event_date limit 5`)
+    },
     getProjects: () => {
     	return queryTemplate('select * from projects')
     },  
@@ -90,7 +93,6 @@ module.exports = {
     insertPartnerships: (partnerships) => {
         return queryTemplate('insert into partnerships values($1,$2,$3)', [partnerships.project_name, partnerships.faculty_contact, partnerships.partner_organization])
     },
-    
     insertActions: (actions) => {
         return queryTemplate('insert into actions (due_date, content) values($1,$2,$3)', [actions.action_id, actions.due_date, actions.content])
     },
@@ -132,5 +134,8 @@ module.exports = {
     },
     updateVolunteerEventsStudents: (event_name, event_date, new_num) => {
         return ( 'UPDATE VolunteerEvents SET num_students = $1 WHERE event_name = $2 AND event_date = $3', [new_num, event_name, event_date] )
+    },
+    getContact: (email) => {
+        return queryTemplate(`select * from contacts where email=$1`, [email])
     }
 }

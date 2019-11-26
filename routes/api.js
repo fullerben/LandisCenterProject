@@ -12,22 +12,22 @@ router.get('/contacts/all', async (req, res) => {
     res.json(contacts.rows)
 })
 
-router.get('/volunteerevents', async (req, res) => {
+router.get('/volunteerevents/all', async (req, res) => {
     const events = await db.getVolunteerEvents()
     res.json(events.rows)
 })
 
-router.get('/volunteerprograms', async (req, res) => {
+router.get('/volunteerprograms/all', async (req, res) => {
     const programs = await db.getVolunteerEvents()
     res.json(programs.rows)
 })
 
-router.get('/projects', async (req, res) => {
+router.get('/projects/all', async (req, res) => {
     const projects = await db.getProjects()
     res.json(projects.rows)
 })
 
-router.get('/facultycontacts', async (req, res) => {
+router.get('/facultycontacts/all', async (req, res) => {
     const contacts = await db.getFacultyContacts()
     res.json(contacts.rows)
 })
@@ -61,6 +61,12 @@ router.post('/contacts/add', async (req, res) => {
     const contact = req.body.contact; //This will need to be parsed later for security
     db.insertContact(contact)
     res.status(200)
+})
+
+router.get('/contacts/:name', async (req, res) => {
+    const contact = await db.findContact(req.params.name)
+    console.log(req.params.name, contact)
+    res.json(contact.rows[0])
 })
 
 router.get('/actions/all', async (req, res) => {
