@@ -28,4 +28,10 @@ router.post('/add', (req, res) => {
     res.redirect('/contacts/all')
 })
 
+router.post('/search/org', (req, res) => {
+    const contact = req.body.org
+    db.getContactUsingOrganization(contact)
+    res.render('search', { contacts: contacts.rows })
+})
+
 module.exports = router
