@@ -10,7 +10,7 @@
                     <h5 class="card-title">Upcoming Action Item for <%= action.project_name %></h5>
                     <h6 class="card-subtitle mb-2 text-muted">Due <%= action.due_date %></h6>
                     <p class="card-text"><%= action.content %></p>
-                    <a href="#" class="card-link">Mark as Done</a>
+                    <a href="#" class="card-link mark-as-done" id="<%= action.action_id %>">Mark as Done</a>
                   </div>
                 </div>
               <% }) %>
@@ -35,3 +35,4 @@
         <% }) %>
     </div>
 </div>
+<script src="/js/home.js"></script>

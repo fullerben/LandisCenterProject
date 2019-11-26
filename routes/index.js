@@ -5,7 +5,6 @@ const express = require('express')
 router.get('/', async (req, res) => {
     const actions = await db.getMostRecentActions()
     const events = await db.getUpcomingVolunteerEventsWithContact()
-    console.log(events)
     res.render('home', {actions: actions.rows, events: events.rows })
 })
 

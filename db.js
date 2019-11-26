@@ -73,7 +73,10 @@ module.exports = {
         return queryTemplate('insert into contacts values($1,$2,$3,$4,$5)', [contact.name, contact.email, contact.phone, contact.secondary_phone, contact.extension])
     },
     getMostRecentActions: () => {
-        return queryTemplate("select project_name, TO_CHAR(due_date :: DATE, 'Mon dd, yyyy') as due_date, content from projectactions join actions on actions.action_id=projectactions.action_id join projects on project=project_name order by due_date limit 5")
+        return queryTemplate(`select actions.action_id, TO_CHAR(due_date :: DATE, 'Mon dd, yyyy') as due_date, content from actions where done=false order by due_date limit 5`)
+    },
+    getMostRecentProjectActions: () => {
+        return queryTemplate("select actions.action_id, project_name, TO_CHAR(due_date :: DATE, 'Mon dd, yyyy') as due_date, content from projectactions join actions on actions.action_id=projectactions.action_id join projects on project=project_name where done=false order by due_date limit 5")
     },
     insertFacultyContacts: (facultycontacts) => {
         return queryTemplate('insert into facultycontacts values($1,$2,$3)', [facultycontacts.email, facultycontacts.department, facultycontacts.involvement_type])
@@ -94,7 +97,7 @@ module.exports = {
         return queryTemplate('insert into partnerships values($1,$2,$3)', [partnerships.project_name, partnerships.faculty_contact, partnerships.partner_organization])
     },
     insertActions: (actions) => {
-        return queryTemplate('insert into actions (due_date, content) values($1,$2,$3)', [actions.action_id, actions.due_date, actions.content])
+        return queryTemplate('insert into actions (due_date, content, done) values($1,$2,$3)', [actions.due_date, actions.content, actions.done])
     },
     insertPartnerActions: (partneractions) => {
         return queryTemplate('insert into partneractions values($1,$2)', [partneractions.partner_name, partnerships.action.id])
@@ -119,6 +122,9 @@ module.exports = {
     },
     updateActions: (action_id, new_content) => {
         return ( 'UPDATE Actions SET content = $1 WHERE action_id = $2', [new_content, action_id] )
+    },
+    setActionDone: (action_id) => {
+        return queryTemplate('update actions set done=TRUE where action_id=$1', [action_id])
     },
     updateContactPhone: (email, new_phone) => {
         return ( 'UPDATE Contacts SET phone = $1 WHERE email = $2', [new_phone, email] )
