@@ -32,12 +32,18 @@ module.exports = {
     },
     getVolunteerEvents: () => {
     	return queryTemplate('select * from volunteerEvents')
-    },  
+    },
+    getUpcomingVolunteerEventsWithContact: () => {
+        return queryTemplate(`select description, event_name, contacts.name, contact_email, TO_CHAR(event_date :: DATE, 'Mon dd, yyyy') as event_date from volunteerevents join contacts on volunteerevents.contact_email=contacts.email order by event_date limit 5`)
+    },
     getProjects: () => {
     	return queryTemplate('select * from projects')
     },  
     getContactsWithOrganizations: () => {
         return queryTemplate('select * from contacts left outer join organizationcontacts on contacts.email=organizationcontacts.contact_email order by name')
+    },
+    getContacts: () => {
+        return queryTemplate('select * from contacts')
     },
     getFacultyContacts: () => {
         return queryTemplate('select * from facultycontacts')
@@ -70,7 +76,10 @@ module.exports = {
         return queryTemplate('insert into contacts values($1,$2,$3,$4,$5)', [contact.name, contact.email, contact.phone, contact.secondary_phone, contact.extension])
     },
     getMostRecentActions: () => {
-        return queryTemplate("select project_name, TO_CHAR(due_date :: DATE, 'Mon dd, yyyy') as due_date, content from projectactions join actions on actions.action_id=projectactions.action_id join projects on project=project_name order by due_date limit 5")
+        return queryTemplate(`select actions.action_id, TO_CHAR(due_date :: DATE, 'Mon dd, yyyy') as due_date, content from actions where done=false order by due_date limit 5`)
+    },
+    getMostRecentProjectActions: () => {
+        return queryTemplate("select actions.action_id, project_name, TO_CHAR(due_date :: DATE, 'Mon dd, yyyy') as due_date, content from projectactions join actions on actions.action_id=projectactions.action_id join projects on project=project_name where done=false order by due_date limit 5")
     },
     insertFacultyContacts: (facultycontacts) => {
         return queryTemplate('insert into facultycontacts values($1,$2,$3)', [facultycontacts.email, facultycontacts.department, facultycontacts.involvement_type])
@@ -90,9 +99,8 @@ module.exports = {
     insertPartnerships: (partnerships) => {
         return queryTeCmplate('insert into partnerships values($1,$2,$3)', [partnerships.project_name, partnerships.faculty_contact, partnerships.partner_organization])
     },
-    
     insertActions: (actions) => {
-        return queryTemplate('insert into actions (due_date, content) values($1,$2,$3)', [actions.action_id, actions.due_date, actions.content])
+        return queryTemplate('insert into actions (due_date, content, done) values($1,$2,$3)', [actions.due_date, actions.content, actions.done])
     },
     insertPartnerActions: (partneractions) => {
         return queryTemplate('insert into partneractions values($1,$2)', [partneractions.partner_name, partnerships.action.id])
@@ -106,17 +114,23 @@ module.exports = {
     getOrganizationContacts: (name) => {
         return queryTemplate(`select contacts.name, contacts.email, contacts.phone, contacts.secondary_phone, contacts.extension from contacts join organizationcontacts on organizationcontacts.contact_email=contacts.email where organizationcontacts.organization_name='Best Buddies'`, [name])
     },
-    getAllActions: () => {
-        return queryTemplate('select * from actions')
-    },
     getProjectActions: (project) => {
         return queryTemplate('select * from actions join actionprojects on actions.action_id=actionprojects.action_id where project=$1', [project])
+    },
+    getAllPartnerActions: () => {
+        return queryTemplate('select * from actions natural join partneractions natural join partnerships')
+    },
+    getAllProjectActions: () => {
+        return queryTemplate('select * from actions natural join projectactions natural join projects join contacts on projects.contact_email=email')
     },
     insertContact: (contact) => {
         return queryTemplate('insert into contacts values($1,$2,$3,$4,$5)', [contact.name, contact.email, contact.phone, contact.secondary_phone, contact.extension])
     },
     updateActions: (action_id, new_content) => {
         return ( 'UPDATE Actions SET content = $1 WHERE action_id = $2', [new_content, action_id] )
+    },
+    setActionDone: (action_id) => {
+        return queryTemplate('update actions set done=TRUE where action_id=$1', [action_id])
     },
     updateContactPhone: (email, new_phone) => {
         return ( 'UPDATE Contacts SET phone = $1 WHERE email = $2', [new_phone, email] )
@@ -132,5 +146,8 @@ module.exports = {
     },
     updateVolunteerEventsStudents: (event_name, event_date, new_num) => {
         return ( 'UPDATE VolunteerEvents SET num_students = $1 WHERE event_name = $2 AND event_date = $3', [new_num, event_name, event_date] )
+    },
+    getContact: (email) => {
+        return queryTemplate(`select * from contacts where email=$1`, [email])
     }
 }

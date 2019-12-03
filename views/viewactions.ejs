@@ -1,0 +1,23 @@
+<% include partials/header %>
+<% include partials/menu %>
+
+<div class="main-wrapper">
+    <div class="card-wrapper">
+        <p class="section-title">Project Action Items</p>
+        <div class="card-deck">
+            <% projectActions.forEach(action => { %>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                    <h5 class="card-title">Upcoming Action Item for <%= action.project_name %></h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Due <%= action.due_date %></h6>
+                    <p class="card-text"><%= action.content %></p>
+                    <p class="card-text">Contact Name: <%= action.name %></p>
+                    <p class="card-text">Contact Email: <%= action.email %></p>
+                    <p class="card-text">Contact Phone: <%= action.phone %></p>
+                    <a href="#" class="card-link mark-as-done" id="<%= action.action_id %>">Mark as Done</a>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</div>

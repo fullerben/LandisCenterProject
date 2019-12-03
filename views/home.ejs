@@ -7,13 +7,32 @@
             <% actions.forEach(action => { %>
                 <div class="card" style="width: 18rem;">
                   <div class="card-body">
-                    <h5 class="card-title">Upcoming Action Item for <%= action.project_name %></h5>
+                    <h5 class="card-title">Upcoming Action Item</h5>
                     <h6 class="card-subtitle mb-2 text-muted">Due <%= action.due_date %></h6>
                     <p class="card-text"><%= action.content %></p>
-                    <a href="#" class="card-link">Mark as Done</a>
+                    <a href="#" class="card-link mark-as-done" id="<%= action.action_id %>">Mark as Done</a>
                   </div>
                 </div>
               <% }) %>
         </div>
     </div>
+    <div class="events-wrapper">
+        <p class="section-title">Upcoming Volunteer Events</p>
+        <% events.forEach(event => { %>
+            <div class="card text-center">
+                <div class="card-header">
+                    Upcoming Event
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title"><%= event.event_name %></h5>
+                    <p class="card-text"><%= event.description %></p>
+                    <a href="/contacts/<%= event.contact_email %>" class="btn btn-primary">Go to Contact</a>
+                </div>
+                <div class="card-footer text-muted">
+                    Happens on <%= event.event_date %>
+                </div>
+            </div>
+        <% }) %>
+    </div>
 </div>
+<script src="/js/home.js"></script>

@@ -12,22 +12,22 @@ router.get('/contacts/all', async (req, res) => {
     res.json(contacts.rows)
 })
 
-router.get('/volunteerevents', async (req, res) => {
+router.get('/volunteerevents/all', async (req, res) => {
     const events = await db.getVolunteerEvents()
     res.json(events.rows)
 })
 
-router.get('/volunteerprograms', async (req, res) => {
+router.get('/volunteerprograms/all', async (req, res) => {
     const programs = await db.getVolunteerEvents()
     res.json(programs.rows)
 })
 
-router.get('/projects', async (req, res) => {
+router.get('/projects/all', async (req, res) => {
     const projects = await db.getProjects()
     res.json(projects.rows)
 })
 
-router.get('/facultycontacts', async (req, res) => {
+router.get('/facultycontacts/all', async (req, res) => {
     const contacts = await db.getFacultyContacts()
     res.json(contacts.rows)
 })
@@ -63,6 +63,12 @@ router.post('/contacts/add', async (req, res) => {
     res.status(200)
 })
 
+router.get('/contacts/:name', async (req, res) => {
+    const contact = await db.findContact(req.params.name)
+    console.log(req.params.name, contact)
+    res.json(contact.rows[0])
+})
+
 router.get('/actions/all', async (req, res) => {
     const actions = await db.getAllActions();
     res.json(actions.rows)
@@ -76,6 +82,26 @@ router.get('/actions/project/:project_name', async (req, res) => {
 router.get('/contacts/all', async (req, res) => {
     const contacts = await db.getContactsWithOrganizations()
     res.json(contacts.rows)
+})
+
+router.put( '/volunteerevents/num_students', async (req, res) => {
+    const updateVolunteerEventsStudents = await db.updateVolunteerEventsStudents( num_students, req.params.new_num ) ;
+    res.json( updateVolunteerEventsStudents )
+})
+
+router.put( '/contacts/secondary_phone', async (req, res) => {
+    const updateContactSecondaryPhone = await db.updateContactSecondaryPhone( secondary_phone, req.params.new_sec_phone ) ;
+    res.json( updateContactSecondaryPhone )
+})
+
+router.get('/actions/project/:project_name', async (req, res) => {
+    const project_actions = db.getProjectActions(req.params.project_name)
+    res.json(project_actions)
+})
+
+router.get('/contacts/get', async (req, res) => {
+    const contact = await db.findContact(req.query.email)
+    res.json(contact)
 })
 
 

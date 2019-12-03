@@ -1,0 +1,34 @@
+<% include partials/header %>
+<% include partials/menu %>
+
+<div class="main-wrapper" style="display: flex; justify-content: center;">
+    <form action="/actions/add" method="post" style="width:40%;">
+        <div class="form-group">
+            <label for="date">Due Date: (mm/dd/yyyy)</label>
+            <input type="text" class="form-control" id="date" name="due_date" placeholder="Due date">
+        </div>
+        <div class="form-group">
+            <label for="content">Content:</label>
+            <textarea class="form-control" id="content" name="content" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="select-project">Select Project</label>
+            <select class="form-control" name="project" id="select-project">
+                <option>None</option>
+                <% projects.forEach(project => { %>
+                    <option><%= project.project_name %></option>
+                <% }) %>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="select-partner">Select Partner:</label>
+            <select class="form-control" name="partnership" id="select-project">
+                <option>None</option>
+                <% partnerships.forEach(partner => { %>
+                    <option><%= partner.name %></option>
+                <% }) %>
+            </select>
+        </div>
+        <button class="btn btn-primary" type="submit">Add Action</button>
+    </form>        
+</div>
