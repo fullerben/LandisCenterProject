@@ -14,14 +14,14 @@ CREATE TABLE FacultyContacts (
     FOREIGN KEY (email) REFERENCES Contacts(email)
 );
 
-CREATE TABLE VolunteerEvents (    
-    event_date timestamp NOT NULL,              
-    event_name varchar(255) NOT NULL,         
-    contact_email varchar(255),                  
-    num_volunteers int,                          
-    student_org varchar(255) NOT NULL,            
-    coordinator varchar(255) NOT NULL,       
-    PRIMARY KEY (event_name, event_date),         
+CREATE TABLE VolunteerEvents (
+    event_date timestamp NOT NULL,
+    event_name varchar(255) NOT NULL, 
+    contact_email varchar(255), 
+    num_volunteers int,           
+    student_org varchar(255), 
+    coordinator varchar(255),     
+    PRIMARY KEY (event_name, event_date),    
     FOREIGN KEY (contact_email) REFERENCES Contacts(email));
 
 CREATE TABLE Projects (
