@@ -1,9 +1,9 @@
 CREATE TABLE Contacts (
-    name varchar(255) NOT NULL,
+    name varchar(255),
     email varchar(255) NOT NULL,
-    phone smallint(10),
-    secondary_phone smallint(10),
-    extension smallint(10),
+    phone varchar(12),
+    secondary_phone varchar(12),
+    extension varchar(12),
     PRIMARY KEY (email)
 );
 
@@ -63,9 +63,9 @@ CREATE TABLE Actions (
     action_id serial NOT NULL,
     due_date timestamp NOT NULL,
     content varchar(2048),
+    done boolean,
     PRIMARY KEY (action_id)
 );
-
 
 CREATE TABLE ProjectActions (
     action_id int NOT NULL,
