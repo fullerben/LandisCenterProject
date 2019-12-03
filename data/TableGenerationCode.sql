@@ -14,15 +14,15 @@ CREATE TABLE FacultyContacts (
     FOREIGN KEY (email) REFERENCES Contacts(email)
 );
 
-CREATE TABLE VolunteerPrograms (
-    program_id int NOT NULL,
-    project_name varchar(255) NOT NULL,
-    partner_organization varchar(255),
-    contact_email varchar(255) NOT NULL,
-    PRIMARY KEY (program_id),
-    FOREIGN KEY (project_name) REFERENCES Projects(project_name),
-    FOREIGN KEY (partner_organization) REFERENCES Organizations(organization_name)
-);
+CREATE TABLE VolunteerEvents (
+    event_date timestamp NOT NULL,
+    event_name varchar(255) NOT NULL, 
+    contact_email varchar(255), 
+    num_volunteers int,           
+    student_org varchar(255), 
+    coordinator varchar(255),     
+    PRIMARY KEY (event_name, event_date),    
+    FOREIGN KEY (contact_email) REFERENCES Contacts(email));
 
 CREATE TABLE Projects (
     contact_email varchar(255) NOT NULL,
@@ -32,19 +32,16 @@ CREATE TABLE Projects (
     FOREIGN KEY (contact_email) REFERENCES Contacts(email)
 );
 
-CREATE TABLE VolunteerEvents (
-    event_name varchar(255) NOT NULL,
-    event_date timestamp NOT NULL,
-    host_organization varchar(255) NOT NULL,
+CREATE TABLE VolunteerPrograms (
+    program_id int NOT NULL,
+    project_name varchar(255) NOT NULL,
+    partner_organization varchar(255),
     contact_email varchar(255) NOT NULL,
-    coordinator_email varchar(255) NOT NULL,
-    num_volunteers int,
-    description text,
-    PRIMARY KEY (event_name, event_date),
-    FOREIGN KEY (host_organization) REFERENCES Organizations(organization_name),
-    FOREIGN KEY (contact_email) REFERENCES Contacts(email)
+    PRIMARY KEY (program_id),
+    FOREIGN KEY (project_name) REFERENCES Projects(project_name),
+    FOREIGN KEY (partner_organization) REFERENCES Organizations(organization_name)
 );
-
+                                                    
 CREATE TABLE Organizations (
     organization_name varchar(255) NOT NULL,
     organization_type varchar(255) check (organization_type in ('student','community')),
