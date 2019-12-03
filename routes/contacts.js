@@ -25,7 +25,7 @@ router.get('/add', (req, res) => {
 router.post('/add', (req, res) => {
     const contact = scrubContact(req.body) // Will need to be scrubbed more for security eventually
     db.insertContact(contact)
-    res.redirect('/contacts/all')
+    res.redirect('/contacts/add')
 })
 
 router.get('/search', async (req, res) => {
