@@ -84,6 +84,26 @@ router.get('/contacts/all', async (req, res) => {
     res.json(contacts.rows)
 })
 
+router.put( '/volunteerevents/num_students', async (req, res) => {
+    const updateVolunteerEventsStudents = await db.updateVolunteerEventsStudents( num_students, req.params.new_num ) ;
+    res.json( updateVolunteerEventsStudents )
+})
+
+router.put( '/contacts/secondary_phone', async (req, res) => {
+    const updateContactSecondaryPhone = await db.updateContactSecondaryPhone( secondary_phone, req.params.new_sec_phone ) ;
+    res.json( updateContactSecondaryPhone )
+})
+
+router.get('/actions/project/:project_name', async (req, res) => {
+    const project_actions = db.getProjectActions(req.params.project_name)
+    res.json(project_actions)
+})
+
+router.get('/contacts/get', async (req, res) => {
+    const contact = await db.findContact(req.query.email)
+    res.json(contact)
+})
+
 
 
 module.exports = router

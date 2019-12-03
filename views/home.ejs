@@ -7,7 +7,7 @@
             <% actions.forEach(action => { %>
                 <div class="card" style="width: 18rem;">
                   <div class="card-body">
-                    <h5 class="card-title">Upcoming Action Item for <%= action.project_name %></h5>
+                    <h5 class="card-title">Upcoming Action Item</h5>
                     <h6 class="card-subtitle mb-2 text-muted">Due <%= action.due_date %></h6>
                     <p class="card-text"><%= action.content %></p>
                     <a href="#" class="card-link mark-as-done" id="<%= action.action_id %>">Mark as Done</a>

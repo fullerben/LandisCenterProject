@@ -28,6 +28,11 @@ router.post('/add', (req, res) => {
     res.redirect('/contacts/all')
 })
 
+router.get('/search', async (req, res) => {
+    const contacts = await db.getContacts()
+    res.render('search', { contacts: contacts.rows })
+})
+
 router.post('/search/org', (req, res) => {
     const contact = req.body.org
     db.getContactUsingOrganization(contact)

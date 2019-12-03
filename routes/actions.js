@@ -32,4 +32,11 @@ router.post('/complete/:id', async (req, res) => {
     res.sendStatus(200)
 })
 
+router.get('/view', async (req, res) => {
+    const projectActions = await db.getAllProjectActions()
+    console.log(projectActions.rows)
+    const partnerActions = await db.getAllPartnerActions()
+    res.render('viewactions', { projectActions: projectActions.rows, partnerActions: partnerActions.rows })
+})
+
 module.exports = router

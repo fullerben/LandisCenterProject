@@ -42,6 +42,9 @@ module.exports = {
     getContactsWithOrganizations: () => {
         return queryTemplate('select * from contacts left outer join organizationcontacts on contacts.email=organizationcontacts.contact_email order by name')
     },
+    getContacts: () => {
+        return queryTemplate('select * from contacts')
+    },
     getFacultyContacts: () => {
         return queryTemplate('select * from facultycontacts')
     },
@@ -111,11 +114,14 @@ module.exports = {
     getOrganizationContacts: (name) => {
         return queryTemplate(`select contacts.name, contacts.email, contacts.phone, contacts.secondary_phone, contacts.extension from contacts join organizationcontacts on organizationcontacts.contact_email=contacts.email where organizationcontacts.organization_name='Best Buddies'`, [name])
     },
-    getAllActions: () => {
-        return queryTemplate('select * from actions')
-    },
     getProjectActions: (project) => {
         return queryTemplate('select * from actions join actionprojects on actions.action_id=actionprojects.action_id where project=$1', [project])
+    },
+    getAllPartnerActions: () => {
+        return queryTemplate('select * from actions natural join partneractions natural join partnerships')
+    },
+    getAllProjectActions: () => {
+        return queryTemplate('select * from actions natural join projectactions natural join projects join contacts on projects.contact_email=email')
     },
     insertContact: (contact) => {
         return queryTemplate('insert into contacts values($1,$2,$3,$4,$5)', [contact.name, contact.email, contact.phone, contact.secondary_phone, contact.extension])
