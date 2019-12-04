@@ -8,4 +8,8 @@ router.get('/', async (req, res) => {
     res.render('home', {actions: actions.rows, events: events.rows })
 })
 
+router.get('/login', (req, res) => {
+    res.render('login')
+})
+
 module.exports = router

@@ -22,10 +22,10 @@
         </div>
         <div class="form-group">
             <label for="select-partner">Select Partner:</label>
-            <select class="form-control" name="partnership" id="select-project">
+            <select class="form-control" name="partner_name" id="select-project">
                 <option>None</option>
                 <% partnerships.forEach(partner => { %>
-                    <option><%= partner.name %></option>
+                    <option><%= partner.partnership_name %></option>
                 <% }) %>
             </select>
         </div>

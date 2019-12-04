@@ -4,6 +4,8 @@ const express = require('express')
       path = require('path')
       ejs = require('ejs')
       dotenv = require('dotenv')
+      passport = require('passport')
+      LocalStrategy = require('passport-local').Strategy
 
 dotenv.config()
 const PORT = process.env.PORT || 8080
@@ -40,6 +42,17 @@ app.use('/actions', actions)
 //     outputStyle: 'compressed',
 //     prefix: '/css'
 // }))
+
+passport.use(new LocalStrategy(
+    function(username, password, done) {
+      User.findOne({ username: username }, function (err, user) {
+        if (err) { return done(err) }
+        if (!user) { return done(null, false) }
+        if (!user.verifyPassword(password)) { return done(null, false) }
+        return done(null, user);
+      });
+    }
+))
 
 app.listen(PORT, () => {
     console.log(`Running on ${PORT}...`)

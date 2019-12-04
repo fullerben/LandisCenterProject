@@ -12,12 +12,14 @@ const parseAction = (action) => {
 
 router.get('/add', async (req, res) => {
     const projects = await db.getProjects();
-    res.render('addaction', { projects: projects.rows, partnerships: [] })
+    const partnerships = await db.getPartnerships()
+    res.render('addaction', { projects: projects.rows, partnerships: partnerships.rows })
 })
 
 router.post('/add', async (req, res) => {
     const action = parseAction(req.body)
-    await db.insertActions(action)
+    const result = await db.insertActions(action)
+    console.log(result)
     if(action.project !== 'None') {
         db.insertProjectAction({
             action_id: action.action_id,

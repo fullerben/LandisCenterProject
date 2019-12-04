@@ -1,7 +1,5 @@
 const { Pool, Client } = require('pg')
 
-// Don't push actual credentials, these are just for testing
-// Real credentials should be in a separate file
 const pool = new Pool({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
@@ -102,11 +100,11 @@ module.exports = {
     insertActions: (actions) => {
         return queryTemplate('insert into actions (due_date, content, done) values($1,$2,$3)', [actions.due_date, actions.content, actions.done])
     },
-    insertPartnerActions: (partneractions) => {
+    insertPartnerAction: (partneractions) => {
         return queryTemplate('insert into partneractions (partnership, action_id) values($1,$2)', [partneractions.partner_name, partnerships.action_id])
     },
-    insertProjectActions: (action) => {
-        return queryTemplate('insert into projectactions (action_id, proejct) values ($1, $2)', [action.action_id, action.project])
+    insertProjectAction: (action) => {
+        return queryTemplate('insert into projectactions (action_id, project) values ($1, $2)', [action.action_id, action.project])
     },
     getOrganizationByName: (name) => {
         return queryTemplate('select organizations.organization_name, organization_type from organizations where organizations.organization_name=$1', [name])
@@ -149,5 +147,8 @@ module.exports = {
     },
     getContact: (email) => {
         return queryTemplate(`select * from contacts where email=$1`, [email])
+    },
+    getPartnerships: () => {
+        return queryTemplate('select * from partnerships order by partnership_name')
     }
 }
