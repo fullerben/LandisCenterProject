@@ -154,7 +154,10 @@ module.exports = {
     getUserById: (id) => {
         return queryTemplate('select * from users where username=$1', [id])
     },
+    getUser: (username) => {
+        return queryTemplate('select * from users where username=$1', [username])
+    },
     addUser: (user) => {
-        return queryTemplate('insert into users (username, password, name, email) values($1,$2,$3,$4)', [user.username, user.password, user.name, user.email])
+        return queryTemplate('insert into users (username, password, name, email, admin) values($1,$2,$3,$4,$5)', [user.username, user.password, user.name, user.email, false])
     }
 }
