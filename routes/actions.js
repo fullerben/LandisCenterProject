@@ -19,10 +19,16 @@ router.post('/add', async (req, res) => {
     const action = parseAction(req.body)
     await db.insertActions(action)
     if(action.project !== 'None') {
-        // add project action
+        db.insertProjectAction({
+            action_id: action.action_id,
+            project: action.project
+        })
     }
     if(action.partnership !== 'None') {
-        // add partnership action
+        db.insertPartnerAction({
+            action_id: action.action_id,
+            partner_name: action.partner_name
+        })
     }
     res.redirect('/')
 })

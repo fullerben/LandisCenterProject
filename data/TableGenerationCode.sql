@@ -45,7 +45,7 @@ CREATE TABLE VolunteerPrograms (
 CREATE TABLE Organizations (
     organization_name varchar(255) NOT NULL,
     organization_type varchar(255) check (organization_type in ('student','community')),
-    PRIMARY KEY (organization_name),
+    PRIMARY KEY (organization_name)
 );
 
 CREATE TABLE OrganizationContacts (
