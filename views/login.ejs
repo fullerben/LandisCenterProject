@@ -2,10 +2,10 @@
 <% include partials/login-menu %>
 <div style="display: flex; justify-content: center; align-items:center; height: 100vh">
     <div style="border: 2px solid grey; border-radius: 5px; margin-top: -15%; padding: 45px;">
-        <form>
+        <form method="POST" action="/login">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="email" class="form-control" id="username" placeholder="Enter username">
+                <input type="text" class="form-control" id="username" placeholder="Enter username">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>

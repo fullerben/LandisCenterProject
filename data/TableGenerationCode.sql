@@ -85,3 +85,11 @@ CREATE TABLE Partnerships (
     PRIMARY KEY (partnership_name),
     FOREIGN KEY (partner_organization) REFERENCES Organizations(organization_name)
 );
+
+CREATE TABLE Users (
+    username varchar(64) NOT NULL PRIMARY KEY,
+    password varchar(255) NOT NULL,
+    name varchar(255),
+    email varchar(255),
+    admin boolean
+);

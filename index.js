@@ -1,32 +1,52 @@
 const express = require('express')
       bodyParser = require('body-parser')
-      sassMiddleware = require('node-sass-middleware')
+      cookieParser = require('cookie-parser')
       path = require('path')
       ejs = require('ejs')
       dotenv = require('dotenv')
       passport = require('passport')
       LocalStrategy = require('passport-local').Strategy
+      session = require('express-session')
+      bcrypt = require('bcryptjs')
 
+// Passport security middleware configuration
+passport.serializeUser((user, done) => {
+    done(null, user.id)
+})
+passport.deserializeUser(async (id, done) => {
+    const user = await db.getUserById(id)
+    return done(null, user)
+})
+passport.use('local', new LocalStrategy({}, async (username, password, done) => {
+    const user = await db.getUser(username)
+    if(user === null) return done(null, false)
+    else if(!bcrypt.compareSync(password, user.rows[0].password)) return done(null, false)
+    else return done(null, user.rows[0])
+}))
+
+// Load environment variables
 dotenv.config()
 const PORT = process.env.PORT || 8080
 
+// Set up express
+const app = express()
+
+// Load additional middleware
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'ejs')
+app.engine('html', ejs.renderFile)
+app.use(express.static(path.join(__dirname, '/client')))
+app.use(cookieParser())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// Configure routes
 const index = require('./routes/index')
       contacts = require('./routes/contacts')
       test = require('./routes/test')
       api = require('./routes/api')
       organizations = require('./routes/organizations')
       actions = require('./routes/actions')
-
-const app = express()
-
-app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'ejs')
-app.engine('html', ejs.renderFile)
-app.use(express.static(path.join(__dirname, '/client')))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-
-
 app.use('/', index)
 app.use('/contacts', contacts)
 app.use('/test', test)
@@ -34,26 +54,18 @@ app.use('/api', api)
 app.use('/organizations', organizations)
 app.use('/actions', actions)
 
-// app.use(bodyParser.json())
-// app.use(bodyParser.urlencoded({ extended: true }))
-// app.use(sassMiddleware({
-//     src: path.join(__dirname, 'scss'),
-//     dest: path.join(__dirname, 'client'),
-//     outputStyle: 'compressed',
-//     prefix: '/css'
-// }))
+// Use express sessions to preserve login state
+app.use(session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: true
+}))
 
-passport.use(new LocalStrategy(
-    function(username, password, done) {
-      User.findOne({ username: username }, function (err, user) {
-        if (err) { return done(err) }
-        if (!user) { return done(null, false) }
-        if (!user.verifyPassword(password)) { return done(null, false) }
-        return done(null, user);
-      });
-    }
-))
+// Initialize passport
+app.use(passport.initialize())
+app.use(passport.session())
 
+// Start server
 app.listen(PORT, () => {
     console.log(`Running on ${PORT}...`)
 })

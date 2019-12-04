@@ -150,5 +150,11 @@ module.exports = {
     },
     getPartnerships: () => {
         return queryTemplate('select * from partnerships order by partnership_name')
+    },
+    getUserById: (id) => {
+        return queryTemplate('select * from users where username=$1', [id])
+    },
+    addUser: (user) => {
+        return queryTemplate('insert into users (username, password, name, email) values($1,$2,$3,$4)', [user.username, user.password, user.name, user.email])
     }
 }
