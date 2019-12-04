@@ -20,4 +20,14 @@ router.post('/add', async (req, res) => {
     res.redirect('/')
 })
 
+router.get('/update', (req, res) => {
+    res.render('updateorganization')
+})
+
+router.post('/update', async (req, res) => {
+    const organization = req.body
+    await db.updateOrganization(organization)
+    res.redirect('/')
+})
+
 module.exports = router

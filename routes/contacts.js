@@ -39,4 +39,16 @@ router.post('/search/org', (req, res) => {
     res.render('search', { contacts: contacts.rows })
 })
 
+router.get('/update', (req, res) => {
+    res.render('addcontact')
+})
+
+router.post('/update', (req, res) => {
+    const contact = scrubContact(req.body) // how do I change this to individuals 
+    db.updateContactPhone(contact)
+    db.updateContactSecondaryPhone(contact)
+    db.updateExtension(contact)
+    res.redirect('/contacts/search')
+})
+
 module.exports = router
