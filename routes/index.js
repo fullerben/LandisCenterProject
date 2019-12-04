@@ -3,8 +3,9 @@ const express = require('express')
       passport = require('passport')
       db  = require('../db.js')
       bcrypt = require('bcryptjs')
+      auth = require('../auth')
 
-router.get('/', async (req, res) => {
+router.get('/', auth.authenticateUser, async (req, res) => {
     const actions = await db.getMostRecentActions()
     const events = await db.getUpcomingVolunteerEventsWithContact()
     res.render('home', {actions: actions.rows, events: events.rows })
@@ -14,9 +15,10 @@ router.get('/login', (req, res) => {
     res.render('login')
 })
 
-router.post('/login', async (req, res) => {
-    console.log(req.logIn)
-})
+router.post('/login', passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login'
+}))
 
 router.get('/register', (req, res) => {
     res.render('register')
@@ -30,7 +32,12 @@ router.post('/register', async (req, res) => {
         name: req.body.name === '' ? null : req.body.name,
         email: req.body.email === '' ? null : req.body.email
     })
-    res.redirect('/')
+    res.redirect('/login')
+})
+
+router.get('/logout', auth.authenticateUser, (req, res) => {
+    req.logout()
+    res.redirect('/login')
 })
 
 module.exports = router

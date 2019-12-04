@@ -1,6 +1,7 @@
 const express = require('express')
       router = express.Router()
       db  = require('../db.js')
+      auth = require('../auth')
 
 // router.get('/:name', async (req, res) => {
 //     const organization = await db.getOrganizationByName(req.params['name'])
@@ -9,11 +10,11 @@ const express = require('express')
 //     res.render('displayorganization', { organization: organization.rows[0], contacts: contacts.rows })
 // })
 
-router.get('/add', (req, res) => {
+router.get('/add', auth.authenticateUser, (req, res) => {
     res.render('insertorganizations')
 })
 
-router.post('/add', async (req, res) => {
+router.post('/add', auth.authenticateUser, async (req, res) => {
     const organization = req.body
     //const contact = scrubContact(req.body) *Don't need this* 
     await db.insertOrganizations(organization)

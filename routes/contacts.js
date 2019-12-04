@@ -1,6 +1,7 @@
 const express = require('express')
       router = express.Router()
       db  = require('../db.js')
+      auth = require('../auth')
 
 
 const scrubContact = (contact) => {
@@ -13,27 +14,27 @@ const scrubContact = (contact) => {
     }
 }
 
-router.get('/all', async (req, res) => {
+router.get('/all', auth.authenticateUser, async (req, res) => {
     const contacts = await db.getContactsWithOrganizations()
     res.render('index', { contacts: contacts.rows })
 })
 
-router.get('/add', (req, res) => {
+router.get('/add', auth.authenticateUser, (req, res) => {
     res.render('addcontact')
 })
 
-router.post('/add', (req, res) => {
+router.post('/add', auth.authenticateUser, (req, res) => {
     const contact = scrubContact(req.body) // Will need to be scrubbed more for security eventually
     db.insertContact(contact)
     res.redirect('/contacts/add')
 })
 
-router.get('/search', async (req, res) => {
+router.get('/search', auth.authenticateUser, async (req, res) => {
     const contacts = await db.getContacts()
     res.render('search', { contacts: contacts.rows })
 })
 
-router.post('/search/org', (req, res) => {
+router.post('/search/org', auth.authenticateUser, (req, res) => {
     const contact = req.body.org
     db.getContactUsingOrganization(contact)
     res.render('search', { contacts: contacts.rows })
