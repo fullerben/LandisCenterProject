@@ -1,0 +1,16 @@
+<% include partials/header %>
+<% include partials/menu %>
+
+<div class="main-wrapper" style="display: flex; justify-content: center;">
+    <form action="/organizations/update" method="post" style="width:40%;">
+        <div class="form-group">
+            <label for="organization_name">Current Organization Name:</label>
+            <input type="text" class="form-control" id="organization_name" name="organization_name" placeholder="Organization Name">
+        </div>
+        <div class="form-group">
+            <label for="organization_name">New Organization Name:</label>
+            <input type="text" class="form-control" id="organization" name="organization" placeholder="Organization Name">
+        </div>
+        <button class="btn btn-primary" type="submit">Update Organization</button>
+    </form>
+</div>

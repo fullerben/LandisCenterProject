@@ -1,0 +1,20 @@
+<% include partials/header %>
+<% include partials/menu %>
+
+<div class="main-wrapper" style="display: flex; justify-content: center;">
+    <form action="/organizations/add" method="post" style="width:40%;">
+        <div class="form-group">
+            <label for="organization_name">Organization Name:</label>
+            <input type="text" class="form-control" id="organization_name" name="organization_name" placeholder="Organization Name">
+        </div>
+        <div class="form-group">
+          <label for="select-type">Organization Type:</label>
+          <select class="form-control" name="organization_type" id="select-type">
+              <option>None</option>
+              <option>Student</option>
+              <option>Community</option>
+          </select>
+      </div>
+        <button class="btn btn-primary" type="submit">Add Organization</button>
+      </form>
+</div>

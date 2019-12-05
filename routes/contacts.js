@@ -1,6 +1,7 @@
 const express = require('express')
       router = express.Router()
       db  = require('../db.js')
+      auth = require('../auth')
 
 
 const scrubContact = (contact) => {
@@ -13,22 +14,22 @@ const scrubContact = (contact) => {
     }
 }
 
-router.get('/all', async (req, res) => {
+router.get('/all', auth.authenticateUser, async (req, res) => {
     const contacts = await db.getContactsWithOrganizations()
     res.render('index', { contacts: contacts.rows })
 })
 
-router.get('/add', (req, res) => {
+router.get('/add', auth.authenticateUser, (req, res) => {
     res.render('addcontact')
 })
 
-router.post('/add', (req, res) => {
+router.post('/add', auth.authenticateUser, (req, res) => {
     const contact = scrubContact(req.body) // Will need to be scrubbed more for security eventually
     db.insertContact(contact)
     res.redirect('/contacts/add')
 })
 
-router.get('/search', async (req, res) => {
+router.get('/search', auth.authenticateUser, async (req, res) => {
     const contacts = await db.getContacts()
     res.render('search', { contacts: contacts.rows })
 })
@@ -51,6 +52,18 @@ router.get('/search/name', (req, res) => {
     }
     contacts = await db.getContactUsingLIKEName(contact)
     res.render('search', { contacts: contacts.rows })
+})
+
+router.get('/update', (req, res) => {
+    res.render('addcontact')
+})
+
+router.post('/update', (req, res) => {
+    const contact = scrubContact(req.body) // how do I change this to individuals 
+    db.updateContactPhone(contact)
+    db.updateContactSecondaryPhone(contact)
+    db.updateExtension(contact)
+    res.redirect('/contacts/search')
 })
 
 module.exports = router
