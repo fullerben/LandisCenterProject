@@ -34,9 +34,9 @@ router.get('/search', auth.authenticateUser, async (req, res) => {
     res.render('search', { contacts: contacts.rows })
 })
 
-router.get('/search/org', (req, res) => {
+router.get('/search/org', async (req, res) => {
     const contact = req.body.name
-    const contacts;
+    let contacts;
     if (contact == NULL) {
         contacts = db.getContacts();
     }
@@ -44,9 +44,9 @@ router.get('/search/org', (req, res) => {
     res.render('search', { contacts: contacts.rows })
 })
 
-router.get('/search/name', (req, res) => {
+router.get('/search/name', async (req, res) => {
     const contact = req.body.name
-    const contacts;
+    let contacts;
     if (contact == NULL) {
         contacts = db.getContacts();
     }
