@@ -40,15 +40,18 @@ router.post('/search/org', auth.authenticateUser, (req, res) => {
     res.render('search', { contacts: contacts.rows })
 })
 
-router.get('/update', (req, res) => {
-    res.render('addcontact')
+router.get('/update/:id', async (req, res) => {
+    const contact = await db.getContactById(req.params.id)
+    console.log(contact)
+    res.render('updatecontact', {contact: contact.rows[0]})
 })
 
-router.post('/update', (req, res) => {
-    const contact = scrubContact(req.body) // how do I change this to individuals 
-    db.updateContactPhone(contact)
-    db.updateContactSecondaryPhone(contact)
-    db.updateExtension(contact)
+router.post('/update', async (req, res) => {
+    const contact = scrubContact(req.body)
+    if(contact.phone !== null) await db.updateContactPhone(contact.email, contact.phone)
+    if(contact.secondary_phone) await db.updateContactSecondaryPhone(contact.email, contact.secondary_phone)
+    if(contact.extension) await db.updateExtension(contact.email, contact.extension)
+    if(contact.name) await db.updateContactName(contact.email, contact.name)
     res.redirect('/contacts/search')
 })
 

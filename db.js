@@ -130,23 +130,29 @@ module.exports = {
     setActionDone: (action_id) => {
         return queryTemplate('update actions set done=TRUE where action_id=$1', [action_id])
     },
+    updateContactName: (email, name) => {
+        return queryTemplate('update contacts set name=$1 where email=$2', [name, email])
+    },
     updateContactPhone: (email, new_phone) => {
-        return ( 'UPDATE Contacts SET phone = $1 WHERE email = $2', [new_phone, email] )
+        return queryTemplate( 'UPDATE Contacts SET phone = $1 WHERE email = $2', [new_phone, email] )
     },
     updateContactSecondaryPhone: (email, new_sec_phone) => {
-        return ( 'UPDATE Contacts SET secondary_phone = $1 WHERE email = $2', [new_sec_phone, email ] )
+        return queryTemplate( 'UPDATE Contacts SET secondary_phone = $1 WHERE email = $2', [new_sec_phone, email ] )
     },
     updateExtension: (email, new_ext) => {
-        return ( 'UPDATE Contacts SET extension = $1 WHERE email = $2', [new_ext, email] )
+        return queryTemplate( 'UPDATE Contacts SET extension = $1 WHERE email = $2', [new_ext, email] )
     },
     updateProjectStudents: (project_name, new_num) => {
-        return ( 'UPDATE Projects SET num_students = $1 WHERE project_name = $2', [new_num, project_name ] )
+        return queryTemplate( 'UPDATE Projects SET num_students = $1 WHERE project_name = $2', [new_num, project_name ] )
     },
     updateVolunteerEventsStudents: (event_name, event_date, new_num) => {
-        return ( 'UPDATE VolunteerEvents SET num_students = $1 WHERE event_name = $2 AND event_date = $3', [new_num, event_name, event_date] )
+        return queryTemplate( 'UPDATE VolunteerEvents SET num_students = $1 WHERE event_name = $2 AND event_date = $3', [new_num, event_name, event_date] )
     },
     getContact: (email) => {
         return queryTemplate(`select * from contacts where email=$1`, [email])
+    },
+    getContactById: (id) => {
+        return queryTemplate('select * from contacts where id=$1', [id])
     },
     getPartnerships: () => {
         return queryTemplate('select * from partnerships order by partnership_name')
