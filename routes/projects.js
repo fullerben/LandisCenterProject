@@ -2,6 +2,11 @@ const express = require('express')
       router = express.Router()
       db  = require('../db.js')
 
+router.get('/search', async (req, res) => {
+    const projects = await db.getProjects()
+    res.render('searchprojects', { projects: projects })
+})
+
 router.get('/update', (req, res) => {
     res.render('updateproject')
 })

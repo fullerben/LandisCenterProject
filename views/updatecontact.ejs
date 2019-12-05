@@ -5,23 +5,23 @@
     <form action="/contacts/update" method="post" style="width:40%;">
         <div class="form-group">
             <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Contact name">
+            <input type="text" class="form-control" id="name" name="name" value="<%= contact.name %>">
         </div>
         <div class="form-group">
-          <label for="email">Email address:</label>
-          <input type="email" class="form-control" id="email" name="email" placeholder="Contact email">
+          <label for="email">Email address (required):</label>
+          <input type="email" class="form-control" id="email" name="email" value="<%= contact.email %>">
         </div>
         <div class="form-group">
             <label for="phone">New Phone:</label>
-            <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone">
+            <input type="text" class="form-control" id="phone" name="phone" value="<%= contact.phone %>">
         </div>
         <div class="form-group">
             <label for="secondaryphone">New Secondary Phone (optional):</label>
-            <input type="text" class="form-control" id="secondaryphone" name="secondary_phone" placeholder="Secondary Phone">
+            <input type="text" class="form-control" id="secondaryphone" name="secondary_phone" value="<%= contact.secondary_phone %>">
         </div>
         <div class="form-group">
             <label for="extension">New Extension (optional):</label>
-            <input type="text" class="form-control" id="extension" name="extension" placeholder="Extension">
+            <input type="text" class="form-control" id="extension" name="extension" value="<%= contact.extension %>">
         </div>
         <button class="btn btn-primary" type="submit">Update Contact</button>
       </form>
