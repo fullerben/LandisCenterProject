@@ -16,7 +16,12 @@ const scrubContact = (contact) => {
 
 router.get('/all', auth.authenticateUser, async (req, res) => {
     const contacts = await db.getContactsWithOrganizations()
-    res.render('contactsName', { contacts: contacts.rows })
+    res.render('searchContacts', { contacts: contacts.rows })
+})
+
+router.get('/faculty', async (req, res) => {
+    const contacts = await db.getFacultyContacts()
+    res.render('searchFaculty', { contacts: contacts.rows })
 })
 
 router.get('/add', auth.authenticateUser, (req, res) => {
@@ -34,24 +39,24 @@ router.get('/search', auth.authenticateUser, async (req, res) => {
     res.render('search', { contacts: contacts.rows })
 })
 
-router.get('/search/org', async (req, res) => {
+router.post('/search/name', async (req, res) => {
     const contact = req.body.name
     let contacts;
     if (contact == "") {
         contacts = db.getContacts();
     }
-    contacts = await db.getContactUsingLIKEOrganization(contact)
-    res.render('search', { contacts: contacts.rows })
+    contacts = await db.getContactUsingLikeName(contact)
+    res.render('searchContacts', { contacts: contacts.rows })
 })
 
-router.get('/search/name', async (req, res) => {
-    const contact = req.body.name
+router.post('/search/faculty', async (req, res) => {
+    const contact = req.body.department
     let contacts;
     if (contact == "") {
-        contacts = db.getContacts();
+        contacts = db.getFacultyContacts();
     }
-    contacts = await db.getContactUsingLIKEName(contact)
-    res.render('search', { contacts: contacts.rows })
+    contacts = await db.getFacultyContactUsingDepartment(contact)
+    res.render('searchFaculty', { contacts: contacts.rows })
 })
 
 router.get('/update', (req, res) => {

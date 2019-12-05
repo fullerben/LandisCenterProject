@@ -13,6 +13,7 @@ const queryTemplate = (queryString, params) => {
         text: queryString,
         values: params === undefined ? [] : params
     }
+    console.log(params)
 
     return pool.query(query)
                .then(data => {
@@ -41,13 +42,14 @@ module.exports = {
         return queryTemplate('select * from contacts left outer join organizationcontacts on contacts.email=organizationcontacts.contact_email order by name')
     },
     getContacts: () => {
-        return queryTemplate('select * from contacts')
+        return queryTemplate('select * from contacts order by name')
     },
     getFacultyContacts: () => {
-        return queryTemplate('select * from facultycontacts')
+        return queryTemplate('select contacts.email, contacts.name, facultycontacts.department  from facultycontacts, contacts where contacts.email = facultycontacts.email')
     },
-    getFacultyContactsUsingDepartment: (department) => {
-    	return queryTemplate('select * from facultycontacts where department = $1', [department])
+    getFacultyContactUsingDepartment: (department) => {
+        let likename = '%' + department + '%';
+    	return queryTemplate('select contacts.email, contacts.name, facultycontacts.department from facultycontacts, contacts where contacts.email = facultycontacts.email AND facultycontacts.department LIKE $1', [likename])
     },
     getContactsUsingOrganization: (org) => {
     	return queryTemplate('select * from contacts join organizationcontacts on contacts.email=organizationcontacts.contact_email where organization = $1', [org])
@@ -55,11 +57,13 @@ module.exports = {
     getContactsUsingName: (name) => {
     	return queryTemplate('select * from contacts join organizationcontacts on contacts.email=organizationcontacts.contact_email where name = $1', [name])
     },
-    getContactsUsingLIKEOrganization: (org) => {
-    	return queryTemplate(`select * from contacts join organizationcontacts on contacts.email=organizationcontacts.contact_email where organization LIKE CONCAT('%', $1, '%')`, [org])
+    getOrgUsingLikeOrganization: (org) => {
+        let likename = '%' + org + '%';
+    	return queryTemplate('select * from organizations where organization_name LIKE $1 order by organization_name', [likename])
     },
-    getContactsUsingLIKEName: (name) => {
-    	return queryTemplate("select * from contacts join organizationcontacts on contacts.email=organizationcontacts.contact_email where name LIKE CONCAT('%', $1, '%')", [name])
+    getContactUsingLikeName: (name) => {
+        let likename = '%' + name + '%';
+    	return queryTemplate("select * from contacts where name LIKE $1 order by name", [likename])
     },
     getContactsUsingProject: (name) => {
     	return queryTemplate('select * from contacts join projects on contacts.email=projects.contact_email where project_name = $1', [name])
@@ -117,6 +121,9 @@ module.exports = {
     },
     getOrganizationByName: (name) => {
         return queryTemplate('select organizations.organization_name, organization_type from organizations where organizations.organization_name=$1', [name])
+    },
+    getOrganizations: () => {
+        return queryTemplate('select * from organizations');
     },
     getOrganizationContacts: (name) => {
         return queryTemplate(`select contacts.name, contacts.email, contacts.phone, contacts.secondary_phone, contacts.extension from contacts join organizationcontacts on organizationcontacts.contact_email=contacts.email where organizationcontacts.organization_name='Best Buddies'`, [name])
