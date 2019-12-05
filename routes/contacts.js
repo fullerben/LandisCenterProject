@@ -16,7 +16,7 @@ const scrubContact = (contact) => {
 
 router.get('/all', auth.authenticateUser, async (req, res) => {
     const contacts = await db.getContactsWithOrganizations()
-    res.render('index', { contacts: contacts.rows })
+    res.render('contactsName', { contacts: contacts.rows })
 })
 
 router.get('/add', auth.authenticateUser, (req, res) => {
@@ -34,15 +34,28 @@ router.get('/search', auth.authenticateUser, async (req, res) => {
     res.render('search', { contacts: contacts.rows })
 })
 
-router.post('/search/org', auth.authenticateUser, (req, res) => {
-    const contact = req.body.org
-    db.getContactUsingOrganization(contact)
+router.get('/search/org', async (req, res) => {
+    const contact = req.body.name
+    let contacts;
+    if (contact == "") {
+        contacts = db.getContacts();
+    }
+    contacts = await db.getContactUsingLIKEOrganization(contact)
+    res.render('search', { contacts: contacts.rows })
+})
+
+router.get('/search/name', async (req, res) => {
+    const contact = req.body.name
+    let contacts;
+    if (contact == "") {
+        contacts = await db.getContacts();
+    }
+    contacts = await db.getContactUsingLIKEName(contact)
     res.render('search', { contacts: contacts.rows })
 })
 
 router.get('/update/:id', auth.authenticateUser, async (req, res) => {
     const contact = await db.getContactById(req.params.id)
-    console.log(contact)
     res.render('updatecontact', {contact: contact.rows[0]})
 })
 
