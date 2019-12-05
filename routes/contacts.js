@@ -16,7 +16,7 @@ const scrubContact = (contact) => {
 
 router.get('/all', auth.authenticateUser, async (req, res) => {
     const contacts = await db.getContactsWithOrganizations()
-    res.render('index', { contacts: contacts.rows })
+    res.render('contactsName', { contacts: contacts.rows })
 })
 
 router.get('/add', auth.authenticateUser, (req, res) => {
@@ -37,7 +37,7 @@ router.get('/search', auth.authenticateUser, async (req, res) => {
 router.get('/search/org', async (req, res) => {
     const contact = req.body.name
     let contacts;
-    if (contact == NULL) {
+    if (contact == "") {
         contacts = db.getContacts();
     }
     contacts = await db.getContactUsingLIKEOrganization(contact)
@@ -47,7 +47,7 @@ router.get('/search/org', async (req, res) => {
 router.get('/search/name', async (req, res) => {
     const contact = req.body.name
     let contacts;
-    if (contact == NULL) {
+    if (contact == "") {
         contacts = db.getContacts();
     }
     contacts = await db.getContactUsingLIKEName(contact)

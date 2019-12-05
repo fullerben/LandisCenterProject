@@ -5,9 +5,9 @@
     <form action="/contacts/search/name" method="get" style="width:40%;">
         <div class="form-group">
             <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Contact Organization">
+            <input type="text" class="form-control" id="name" name="name" placeholder="Contact Name">
+            <button class="btn btn-primary" type="submit">Find Contact</button>
         </div>
-        <button class="btn btn-primary" type="submit">Find Contact</button>
      </form>
       <div class="card-wrapper">
         <% contacts.forEach(contact => { %>
@@ -25,7 +25,7 @@
                 <p class="card-text">Secondary Phone: <%= contact.secondary_phone %></p>
               <% } %>
               <p class="card-text">Organization: <%= contact.organization_name %></p>
-              <a href="#" class="btn btn-primary">Go to Organization</a>
+              <a href="/contacts/update/<%= contact.id %>" class="btn btn-primary">Go to Organization</a>
             </div>
           </div>
         <% }) %>
