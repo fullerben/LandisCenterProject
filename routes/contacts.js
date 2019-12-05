@@ -40,18 +40,19 @@ router.post('/search/org', auth.authenticateUser, (req, res) => {
     res.render('search', { contacts: contacts.rows })
 })
 
-router.get('/update/:id', async (req, res) => {
+router.get('/update/:id', auth.authenticateUser, async (req, res) => {
     const contact = await db.getContactById(req.params.id)
     console.log(contact)
     res.render('updatecontact', {contact: contact.rows[0]})
 })
 
-router.post('/update', async (req, res) => {
+router.post('/update', auth.authenticateUser, async (req, res) => {
     const contact = scrubContact(req.body)
+    if(!contact.email) res.redirect('/')
     if(contact.phone !== null) await db.updateContactPhone(contact.email, contact.phone)
-    if(contact.secondary_phone) await db.updateContactSecondaryPhone(contact.email, contact.secondary_phone)
-    if(contact.extension) await db.updateExtension(contact.email, contact.extension)
-    if(contact.name) await db.updateContactName(contact.email, contact.name)
+    if(contact.secondary_phone !== null) await db.updateContactSecondaryPhone(contact.email, contact.secondary_phone)
+    if(contact.extension !== null) await db.updateExtension(contact.email, contact.extension)
+    if(contact.name !== null) await db.updateContactName(contact.email, contact.name)
     res.redirect('/contacts/search')
 })
 
