@@ -5,7 +5,11 @@
     <div class="card border-secondary mb-3" style="width: 30rem;">
         <div class="card-header"><b><%= organization.organization_name %></b></div>
         <div class="card-body text-secondary">
-            
+            <b>Contacts in this organization:</b>
+        </div>
+        <div>
+            <% organization.forEach(contact => { %>
+              <p class="card-text"><a href='#'> <%= contact.name %><a></p>
         </div>
     </div>
 </div>

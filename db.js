@@ -52,6 +52,15 @@ module.exports = {
     getContactsUsingOrganization: (org) => {
     	return queryTemplate('select * from contacts join organizationcontacts on contacts.email=organizationcontacts.contact_email where organization = $1', [org])
     },
+    getContactsUsingName: (name) => {
+    	return queryTemplate('select * from contacts join organizationcontacts on contacts.email=organizationcontacts.contact_email where name = $1', [name])
+    },
+    getContactsUsingLIKEOrganization: (org) => {
+    	return queryTemplate('select * from contacts join organizationcontacts on contacts.email=organizationcontacts.contact_email where organization LIKE CONCAT('%', $1, '%')', [org])
+    },
+    getContactsUsingLIKEName: (name) => {
+    	return queryTemplate('select * from contacts join organizationcontacts on contacts.email=organizationcontacts.contact_email where name LIKE CONCAT('%', $1, '%')', [name])
+    },
     getContactsUsingProject: (name) => {
     	return queryTemplate('select * from contacts join projects on contacts.email=projects.contact_email where project_name = $1', [name])
     },  

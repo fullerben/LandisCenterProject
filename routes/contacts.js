@@ -33,9 +33,23 @@ router.get('/search', async (req, res) => {
     res.render('search', { contacts: contacts.rows })
 })
 
-router.post('/search/org', (req, res) => {
-    const contact = req.body.org
-    db.getContactUsingOrganization(contact)
+router.get('/search/org', (req, res) => {
+    const contact = req.body.name
+    const contacts;
+    if (contact == NULL) {
+        contacts = db.getContacts();
+    }
+    contacts = await db.getContactUsingLIKEOrganization(contact)
+    res.render('search', { contacts: contacts.rows })
+})
+
+router.get('/search/name', (req, res) => {
+    const contact = req.body.name
+    const contacts;
+    if (contact == NULL) {
+        contacts = db.getContacts();
+    }
+    contacts = await db.getContactUsingLIKEName(contact)
     res.render('search', { contacts: contacts.rows })
 })
 
