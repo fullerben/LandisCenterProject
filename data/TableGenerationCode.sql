@@ -1,6 +1,6 @@
 CREATE TABLE Contacts (
     id serial NOT NULL,
-    name varchar(255),
+    name varchar(255) UNIQUE,
     email varchar(255) NOT NULL,
     phone varchar(12),
     secondary_phone varchar(12),

@@ -1,0 +1,25 @@
+<% include partials/header %>
+<% include partials/menu %>
+
+<div class="main-wrapper" style="display: flex; justify-content: center;">
+    <form action="/projects/add" method="post" style="width:40%;">
+        <div class="form-group">
+            <label for="name">Project Name:</label>
+            <input type="text" class="form-control" id="name" name="project_name" placeholder="Project name">
+        </div>
+        <div class="form-group">
+            <label for="select-partner">Select Contact:</label>
+            <select class="form-control" name="contact_name" id="select-project">
+                <option>None</option>
+                <% contacts.forEach(contact => { %>
+                    <option><%= contact.name %></option>
+                <% }) %>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="phone">Number of Volunteers:</label>
+            <input type="number" class="form-control" id="phone" name="num_volunteers">
+        </div>
+        <button class="btn btn-primary" type="submit">Add Contact</button>
+      </form>
+</div>

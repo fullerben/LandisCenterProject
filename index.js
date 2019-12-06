@@ -60,11 +60,15 @@ const index = require('./routes/index')
       api = require('./routes/api')
       organizations = require('./routes/organizations')
       actions = require('./routes/actions')
+      projects = require('./routes/projects')
+      volunteerevents = require('./routes/volunteerevents')
 app.use('/', index)
 app.use('/contacts', contacts)
 app.use('/api', api)
 app.use('/organizations', organizations)
 app.use('/actions', actions)
+app.use('/projects', projects)
+app.use('/volunteerevents', volunteerevents)
 
 // Start server
 app.listen(PORT, () => {

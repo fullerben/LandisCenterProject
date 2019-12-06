@@ -15,7 +15,12 @@ const scrubContact = (contact) => {
 }
 
 router.get('/all', auth.authenticateUser, async (req, res) => {
-    const contacts = await db.getContactsWithOrganizations()
+    let contacts;
+    if(!req.query.length) {
+        contacts = await db.getContactsWithOrganizations()
+    } else {
+        contacts = await db.getContactsUsingLIKEName(req.query.search)
+    }
     res.render('contactsName', { contacts: contacts.rows })
 })
 
@@ -40,18 +45,23 @@ router.get('/search/org', async (req, res) => {
     if (contact == "") {
         contacts = db.getContacts();
     }
-    contacts = await db.getContactUsingLIKEOrganization(contact)
+    contacts = await db.getContactsUsingLIKEOrganization(contact)
     res.render('search', { contacts: contacts.rows })
 })
 
 router.get('/search/name', async (req, res) => {
-    const contact = req.body.name
-    let contacts;
-    if (contact == "") {
-        contacts = await db.getContacts();
+    const contact = req.query.name
+    let contacts
+    if (contact === "") {
+        contacts = await db.getContacts()
     }
-    contacts = await db.getContactUsingLIKEName(contact)
+    contacts = await db.getContactsUsingLIKEName(contact)
     res.render('search', { contacts: contacts.rows })
+})
+
+router.get('/view/:id', async (req, res) => {
+    const contact = await db.getContactById(req.params.id)
+    res.render('viewcontact', {contact: contact.rows[0]})
 })
 
 router.get('/update/:id', auth.authenticateUser, async (req, res) => {

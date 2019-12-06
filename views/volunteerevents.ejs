@@ -1,0 +1,39 @@
+<% include partials/header %>
+<% include partials/menu %>
+
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row" style="display: flex; justify-content: center;">
+            <form action="/volunteerevents/all" method="post" style="width:40%;">
+                <div class="form-group">
+                    <label for="name">Search Volunteer Events:</label>
+                    <input type="text" class="form-control" id="org" name="search" placeholder="Volunteer Event">
+                </div>
+                <button class="btn btn-primary" type="submit">Find Events</button>
+            </form>
+        </div>
+        <div class="row" style="display: flex; justify-content: center;">
+            <div class="card-wrapper" style="width: 60%;">
+                <% events.forEach(event => { %>
+                <div class="card">
+                    <div class="card-header">
+                        Event on <%= event.event_date %>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Event Name: <%= event.event_name %></h5>
+                        <p class="card-text">Description: <%= event.description %></p>
+                        <p class="card-text">Number of Volunteers: <%= event.num_volunteers %></p>
+                        <p class="card-text">Partner Organization: <%= event.student_org %></p>
+                        <% if(event.contact_id !== '') { %>
+                        <a href="/contacts/view/<%= event.contact_id %>" class="btn btn-primary">View Event Contact</a>
+                        <% } %>
+                        <% if(event.contact_id !== '') { %>
+                        <a href="/contacts/view/<%= event.coordinator_id %>" class="btn btn-primary">View Event Coordinator</a>
+                        <% } %>
+                    </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+</div>
