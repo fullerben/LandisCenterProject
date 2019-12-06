@@ -1,0 +1,29 @@
+<% include partials/header %>
+<% include partials/menu %>
+
+<div class="main-wrapper">
+  <div style="display: flex; justify-content: center;">
+    <form action="/contacts/search/faculty" method="post" style="width:40%;">
+      <div class="form-group">
+        <label for="department">Department</label>
+        <input type="text" class="form-control" id="department" name="department" placeholder="Department">
+      </div>
+      <button class="btn btn-primary" type="submit">Find Contact</button>
+    </form>
+  </div>
+  <div class="card-wrapper" style="text-align: center; width: 40%; margin: auto">
+    <% contacts.forEach(contact => { %>
+    <div class="card">
+      <div class="card-header">
+        Contact for <%= contact.name %>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title"><%= contact.name %></h5>
+        <p class="card-text">Email: <%= contact.email %></p>
+        <p class="card-text">Department: <%= contact.department %></p>
+        <p class="card-text">Project: <%= contact.project_name%></p>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+</div>

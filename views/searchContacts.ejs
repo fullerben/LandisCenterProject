@@ -1,0 +1,35 @@
+<% include partials/header %>
+<% include partials/menu %>
+
+<div class="main-wrapper">
+  <div style="display: flex; justify-content: center;">
+    <form action="/contacts/search/name" method="post" style="width:40%;">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Contact Name">
+      </div>
+      <button class="btn btn-primary" type="submit">Find Contact</button>
+    </form>
+  </div>
+  <div class="card-wrapper" style="text-align: center; width: 40%; margin: auto">
+    <% contacts.forEach(contact => { %>
+    <div class="card">
+      <div class="card-header">
+        Contact for <%= contact.name %>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title"><%= contact.name %></h5>
+        <p class="card-text">Email: <%= contact.email %></p>
+        <% if(contact.phone !== null) { %>
+        <p class="card-text">Phone: <%= contact.phone %> <%= contact.extension %></p>
+        <% } %>
+        <% if(contact.secondary_phone !== null) { %>
+        <p class="card-text">Secondary Phone: <%= contact.secondary_phone %></p>
+        <% } %>
+        <p class="card-text">Organization: <%= contact.organization_name %></p>
+        <a href="#"" class=" btn btn-primary">Go to Organization</a>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+</div>

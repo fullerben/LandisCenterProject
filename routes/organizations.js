@@ -10,11 +10,30 @@ const express = require('express')
 //     res.render('displayorganization', { organization: organization.rows[0], contacts: contacts.rows })
 // })
 
-router.get('/add', auth.authenticateUser, (req, res) => {
+router.post('/search', async (req, res) => {
+    const org = req.body.org
+    let orgs;
+    if (org == "") {
+        orgs = db.getContacts();
+    }
+    orgs = await db.getOrgUsingLikeOrganization(org)
+    res.render('searchOrg', { orgs: orgs.rows })
+})
+
+router.get('/add', (req, res) => {
     res.render('insertorganizations')
 })
 
-router.post('/add', auth.authenticateUser, async (req, res) => {
+router.get('/', async (req, res) => {
+    const orgs = await db.getOrganizations()
+    res.render('searchOrg', {orgs: orgs.rows })
+})
+
+router.get('/search', (req, res) => {
+    res.render('insertorganizations')
+})
+
+router.post('/add', async (req, res) => {
     const organization = req.body
     //const contact = scrubContact(req.body) *Don't need this* 
     await db.insertOrganizations(organization)
