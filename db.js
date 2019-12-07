@@ -100,7 +100,7 @@ module.exports = {
         return queryTemplate("select actions.action_id, project_name, TO_CHAR(due_date :: DATE, 'Mon dd, yyyy') as due_date, content from projectactions join actions on actions.action_id=projectactions.action_id join projects on project=project_name where done=false order by due_date limit 5")
     },
     insertFacultyContacts: (facultycontacts) => {
-        return queryTemplate('insert into facultycontacts values($1,$2,$3)', [facultycontacts.email, facultycontacts.department, facultycontacts.involvement_type])
+        return queryTemplate('insert into facultycontacts values($1,$2)', [facultycontacts.email, facultycontacts.department])
     },
     insertVolunteerPrograms: (volunteerprograms) => {
         return queryTemplate('insert into volunteerprograms values($1,$2,$3,$4)', [volunteerprograms.program_id, volunteerprograms.host_organization, volunteerprograms.partner_organization, volunteerprograms.contact_email])
@@ -184,7 +184,7 @@ module.exports = {
         return queryTemplate(`select * from contacts where email=$1`, [email])
     },
     getContactById: (id) => {
-        return queryTemplate('select * from contacts where id=$1', [id])
+        return queryTemplate('select contacts.email, contacts.name, contacts.phone, contacts.secondary_phone, contacts.extension, facultycontacts.department from contacts left outer join facultycontacts on contacts.email=facultycontacts.email where contacts.id=$1', [id])
     },
     getContactEmail: (name) => {
         return queryTemplate('select * from contacts where name=$1', [name])

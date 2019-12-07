@@ -33,9 +33,12 @@ router.get('/add', auth.authenticateUser, (req, res) => {
     res.render('addcontact')
 })
 
-router.post('/add', auth.authenticateUser, (req, res) => {
-    const contact = scrubContact(req.body) // Will need to be scrubbed more for security eventually
-    db.insertContact(contact)
+router.post('/add', auth.authenticateUser, async (req, res) => {
+    const contact = scrubContact(req.body)
+    await db.insertContact(contact)
+    if(contact.department !== '') {
+        await db.insertFacultyContacts(contact.email, contact.department)
+    }
     res.redirect('/contacts/add')
 })
 
@@ -78,11 +81,13 @@ router.post('/search/faculty', async (req, res) => {
 
 router.get('/view/:id', async (req, res) => {
     const contact = await db.getContactById(req.params.id)
+    console.log(contact)
     res.render('viewcontact', {contact: contact.rows[0]})
 })
 
 router.get('/update/:id', auth.authenticateUser, async (req, res) => {
     const contact = await db.getContactById(req.params.id)
+    console.log(contact)
     res.render('updatecontact', {contact: contact.rows[0]})
 })
 
