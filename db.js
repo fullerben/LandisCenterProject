@@ -13,8 +13,6 @@ const queryTemplate = (queryString, params) => {
         text: queryString,
         values: params === undefined ? [] : params
     }
-    console.log(params)
-
     return pool.query(query)
                .then(data => {
                    return data
@@ -131,14 +129,17 @@ module.exports = {
     getOrganizationByName: (name) => {
         return queryTemplate('select organizations.organization_name, organization_type from organizations where organizations.organization_name=$1', [name])
     },
+    getOrganizationById: (id) => {
+        return queryTemplate('select * from organizations where id=$1', [id])
+    },
     getAllOrganizations: () => {
         return queryTemplate('select * from organizations order by organization_name')
     },
     getOrganizations: () => {
         return queryTemplate('select * from organizations');
     },
-    getOrganizationContacts: (name) => {
-        return queryTemplate(`select contacts.name, contacts.email, contacts.phone, contacts.secondary_phone, contacts.extension from contacts join organizationcontacts on organizationcontacts.contact_email=contacts.email where organizationcontacts.organization_name='Best Buddies'`, [name])
+    getOrganizationContacts: (id) => {
+        return queryTemplate(`select contacts.name, contacts.id, contacts.email from contacts natural join (select contact_email as email from organizationcontacts where organization_name=(select organization_name from organizations where id=${id})) as a`)
     },
     getProjectActions: (project) => {
         return queryTemplate('select * from actions join actionprojects on actions.action_id=actionprojects.action_id where project=$1', [project])

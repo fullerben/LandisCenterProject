@@ -50,4 +50,11 @@ router.post('/update', async (req, res) => {
     res.redirect('/')
 })
 
+router.get('/view/:id', async (req, res) => {
+    const id = req.params.id
+    const organization = await db.getOrganizationById(id)
+    const contacts = await db.getOrganizationContacts(id)
+    res.render('vieworganization', { organization: organization.rows[0], contacts: contacts.rows })
+})
+
 module.exports = router
