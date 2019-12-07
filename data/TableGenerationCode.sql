@@ -10,7 +10,7 @@ CREATE TABLE Contacts (
 
 CREATE TABLE FacultyContacts (
     email varchar(255) NOT NULL,
-    department varchar(255) NOT NULL,
+    department varchar(255),
     PRIMARY KEY (email),
     FOREIGN KEY (email) REFERENCES Contacts(email)
 );
