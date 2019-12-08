@@ -114,6 +114,9 @@ module.exports = {
     insertOrganizationContacts: (organizationcontacts) => {
         return queryTemplate('insert into organizationcontacts values($1,$2)', [organizationcontacts.organization_name, organizationcontacts.contact_email])
     },
+    addOrganizationContact: (contact_name, organization_id) => {
+        return queryTemplate('insert into organizationcontacts (organization_name, contact_email) values ((select organization_name from organizations where id=$1), (select email from contacts where name=$2))', [organization_id, contact_name])
+    },
     insertPartnerships: (partnerships) => {
         return queryTeCmplate('insert into partnerships values($1,$2,$3)', [partnerships.project_name, partnerships.faculty_contact, partnerships.partner_organization])
     },
@@ -141,6 +144,9 @@ module.exports = {
     getOrganizationContacts: (id) => {
         return queryTemplate(`select contacts.name, contacts.id, contacts.email from contacts natural join (select contact_email as email from organizationcontacts where organization_name=(select organization_name from organizations where id=${id})) as a`)
     },
+    removeOrganizationContact: (contact, org) => {
+        return queryTemplate(`delete from organizationcontacts where organization_name=(select organization_name from organizations where id=$1) and contact_email=(select email from contacts where id=$2)`, [org, contact])
+    },
     getProjectActions: (project) => {
         return queryTemplate('select * from actions join actionprojects on actions.action_id=actionprojects.action_id where project=$1', [project])
     },
@@ -158,6 +164,9 @@ module.exports = {
     },
     updateActions: (action_id, new_content) => {
         return ( 'UPDATE Actions SET content = $1 WHERE action_id = $2', [new_content, action_id] )
+    },
+    updateOrganization: (organization) => {
+        return queryTemplate('update organizations set organization_name=$1, organization_type=$2', [organization.organization_name, organization.organization_type])
     },
     setActionDone: (action_id) => {
         return queryTemplate('update actions set done=TRUE where action_id=$1', [action_id])
@@ -184,7 +193,7 @@ module.exports = {
         return queryTemplate(`select * from contacts where email=$1`, [email])
     },
     getContactById: (id) => {
-        return queryTemplate('select contacts.email, contacts.name, contacts.phone, contacts.secondary_phone, contacts.extension, facultycontacts.department from contacts left outer join facultycontacts on contacts.email=facultycontacts.email where contacts.id=$1', [id])
+        return queryTemplate('select contacts.email, contacts.name, contacts.phone, contacts.secondary_phone, contacts.extension, facultycontacts.department, contacts.id from contacts left outer join facultycontacts on contacts.email=facultycontacts.email where contacts.id=$1', [id])
     },
     getContactEmail: (name) => {
         return queryTemplate('select * from contacts where name=$1', [name])

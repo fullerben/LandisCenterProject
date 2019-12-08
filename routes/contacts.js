@@ -81,13 +81,11 @@ router.post('/search/faculty', async (req, res) => {
 
 router.get('/view/:id', async (req, res) => {
     const contact = await db.getContactById(req.params.id)
-    console.log(contact)
     res.render('viewcontact', {contact: contact.rows[0]})
 })
 
 router.get('/update/:id', auth.authenticateUser, async (req, res) => {
     const contact = await db.getContactById(req.params.id)
-    console.log(contact)
     res.render('updatecontact', {contact: contact.rows[0]})
 })
 
@@ -98,7 +96,7 @@ router.post('/update', auth.authenticateUser, async (req, res) => {
     if(contact.secondary_phone !== null) await db.updateContactSecondaryPhone(contact.email, contact.secondary_phone)
     if(contact.extension !== null) await db.updateExtension(contact.email, contact.extension)
     if(contact.name !== null) await db.updateContactName(contact.email, contact.name)
-    res.redirect('/contacts/search')
+    res.redirect('/contacts/all')
 })
 
 module.exports = router

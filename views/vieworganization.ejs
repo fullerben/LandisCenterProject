@@ -8,7 +8,7 @@
                 <%= organization.organization_name %>
             </div>
             <div class="card-body">
-                <h5 class="card-title"><%= organization.type %> Organization <%= organization.organization_name %></h5>
+                <h5 class="card-title"><%= organization.organization_type %> Organization <%= organization.organization_name %></h5>
                 <p class="card-text">Contacts:</p>
 
                 <div class="card-deck">
@@ -18,12 +18,29 @@
                             <h5 class="card-title"><%= contact.name %></h5>
                             <p class="card-text">Name: <%= contact.name %></p>
                             <p class="card-text">Email: <%= contact.email %></p>
+                            <form action="/organizations/contacts/remove/<%= contact.id %>/<%= organization.id %>" method="post">
+                                <button class="btn btn-primary" type="submit">Remove Contact</button>
+                            </form>
                             <a href="/contacts/view/<%= contact.id %>" class="card-link">View Full Contact</a>
                             </div>
                         </div>
                     <% }) %>
                 </div>
-
+                <div style="margin-top: 20px">
+                    <a href="/organizations/update/<%= organization.id %>" class="btn btn-primary">Update Organization</a>
+                    <form method="post" action="/organizations/contacts/add/<%= organization.id %>" style="margin-top: 20px">
+                        <div class="form-group">
+                            <label for="select-contact">Add New Contact:</label>
+                            <select class="form-control" name="contact_name" id="select-contact">
+                                <option>None</option>
+                                <% allContacts.forEach(contact => { %>
+                                    <option><%= contact.name %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Add Contact</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
