@@ -15,8 +15,13 @@ const scrubContact = (contact) => {
 }
 
 router.get('/all', auth.authenticateUser, async (req, res) => {
-    const contacts = await db.getContactsWithOrganizations()
-    res.render('searchContacts', { contacts: contacts.rows })
+    let contacts;
+    if(!req.query.length) {
+        contacts = await db.getContactsWithOrganizations()
+    } else {
+        contacts = await db.getContactsUsingLIKEName(req.query.search)
+    }
+    res.render('contactsName', { contacts: contacts.rows })
 })
 
 router.get('/faculty', async (req, res) => {
@@ -28,9 +33,12 @@ router.get('/add', auth.authenticateUser, (req, res) => {
     res.render('addcontact')
 })
 
-router.post('/add', auth.authenticateUser, (req, res) => {
-    const contact = scrubContact(req.body) // Will need to be scrubbed more for security eventually
-    db.insertContact(contact)
+router.post('/add', auth.authenticateUser, async (req, res) => {
+    const contact = scrubContact(req.body)
+    await db.insertContact(contact)
+    if(contact.department !== '') {
+        await db.insertFacultyContacts(contact.email, contact.department)
+    }
     res.redirect('/contacts/add')
 })
 
@@ -45,6 +53,18 @@ router.post('/search/name', async (req, res) => {
     if (contact == "") {
         contacts = db.getContacts();
     }
+    contacts = await db.getContactsUsingLIKEOrganization(contact)
+    res.render('search', { contacts: contacts.rows })
+})
+
+router.get('/search/name', async (req, res) => {
+    const contact = req.query.name
+    let contacts
+    if (contact === "") {
+        contacts = await db.getContacts()
+    }
+    contacts = await db.getContactsUsingLIKEName(contact)
+    res.render('searchContacts', { contacts: contacts.rows })
     contacts = await db.getContactUsingLikeName(contact)
     res.render('searchContacts', { contacts: contacts.rows })
 })
@@ -59,6 +79,11 @@ router.post('/search/faculty', async (req, res) => {
     res.render('searchFaculty', { contacts: contacts.rows })
 })
 
+router.get('/view/:id', async (req, res) => {
+    const contact = await db.getContactById(req.params.id)
+    res.render('viewcontact', {contact: contact.rows[0]})
+})
+
 router.get('/update/:id', auth.authenticateUser, async (req, res) => {
     const contact = await db.getContactById(req.params.id)
     res.render('updatecontact', {contact: contact.rows[0]})
@@ -71,7 +96,7 @@ router.post('/update', auth.authenticateUser, async (req, res) => {
     if(contact.secondary_phone !== null) await db.updateContactSecondaryPhone(contact.email, contact.secondary_phone)
     if(contact.extension !== null) await db.updateExtension(contact.email, contact.extension)
     if(contact.name !== null) await db.updateContactName(contact.email, contact.name)
-    res.redirect('/contacts/search')
+    res.redirect('/contacts/all')
 })
 
 module.exports = router

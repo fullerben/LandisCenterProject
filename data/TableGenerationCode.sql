@@ -1,6 +1,6 @@
 CREATE TABLE Contacts (
     id serial NOT NULL,
-    name varchar(255),
+    name varchar(255) UNIQUE,
     email varchar(255) NOT NULL,
     phone varchar(12),
     secondary_phone varchar(12),
@@ -10,7 +10,7 @@ CREATE TABLE Contacts (
 
 CREATE TABLE FacultyContacts (
     email varchar(255) NOT NULL,
-    department varchar(255) NOT NULL,
+    department varchar(255),
     PRIMARY KEY (email),
     FOREIGN KEY (email) REFERENCES Contacts(email)
 );
@@ -46,7 +46,8 @@ CREATE TABLE VolunteerPrograms (
                                                     
 CREATE TABLE Organizations (
     organization_name varchar(255) NOT NULL,
-    organization_type varchar(255) check (organization_type in ('student','community')),
+    organization_type varchar(255) check (organization_type in ('Student','Community')),
+    id serial NOT NULL.
     PRIMARY KEY (organization_name)
 );
 

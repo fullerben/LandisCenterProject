@@ -4,13 +4,18 @@
 <div class="main-wrapper" style="display: flex; justify-content: center;">
     <form action="/organizations/update" method="post" style="width:40%;">
         <div class="form-group">
-            <label for="organization_name">Current Organization Name:</label>
-            <input type="text" class="form-control" id="organization_name" name="organization_name" placeholder="Organization Name">
+            <label for="name">Organization Name:</label>
+            <input type="text" class="form-control" id="name" name="organization_name" value="<%= organization.organization_name %>">
         </div>
         <div class="form-group">
-            <label for="organization_name">New Organization Name:</label>
-            <input type="text" class="form-control" id="organization" name="organization" placeholder="Organization Name">
+            <label for="type">Organization Type:</label>
+            <select class="form-control" name="organization_type" id="select-type">
+                <option>None</option>
+                <option>Student</option>
+                <option>Community</option>
+            </select>
         </div>
         <button class="btn btn-primary" type="submit">Update Organization</button>
-    </form>
+        <a href="/organizations" class="btn btn-primary">Cancel</button>
+      </form>
 </div>

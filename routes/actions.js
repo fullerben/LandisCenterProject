@@ -2,14 +2,6 @@ const express = require('express')
       router = express.Router()
       db  = require('../db.js')
 
-const parseAction = (action) => {
-    return {
-        due_date: action.due_date,
-        content: action.content,
-        done: false
-    }
-}
-
 router.get('/add', async (req, res) => {
     const projects = await db.getProjects();
     const partnerships = await db.getPartnerships()
@@ -17,19 +9,24 @@ router.get('/add', async (req, res) => {
 })
 
 router.post('/add', async (req, res) => {
-    const action = parseAction(req.body)
-    const result = await db.insertActions(action)
-    console.log(result)
+    let action = req.body
+    await db.insertActions({
+        due_date: action.due_date,
+        content:action.content,
+        done: false
+    })
+    let id = await db.getActionId(action.due_date, action.content)
     if(action.project !== 'None') {
-        db.insertProjectAction({
-            action_id: action.action_id,
+        await db.insertProjectAction({
+            action_id: id.rows[0].action_id,
             project: action.project
         })
     }
-    if(action.partnership !== 'None') {
+    if(action.partner_name !== 'None') {
+        const email = await db.getContactEmail(action.partner_name)
         db.insertPartnerAction({
-            action_id: action.action_id,
-            partner_name: action.partner_name
+            action_id: id.rows[0].action_id,
+            partner_name: email.rows[0].email
         })
     }
     res.redirect('/')

@@ -1,0 +1,17 @@
+<% include partials/header %>
+<% include partials/menu %>
+
+<div class="main-wrapper" style="display: flex; justify-content: center;">
+    <div class="card">
+        <div class="card-header">
+            Contact Information for <%= contact.name %>
+        </div>
+        <div class="card-body" style="padding: 3em;">
+            <p class="card-text">Email: <%= contact.email %></p>
+            <p class="card-text">Phone: <%= contact.phone %></p>
+            <p class="card-text">Extension: <%= contact.extension %></p>
+            <p class="card-text">Secondary Phone: <%= contact.secondary_phone %></p>
+            <a href="/contacts/update/<%= contact.id %>" class="btn btn-primary">Update Contact</a>
+        </div>
+    </div> 
+</div>

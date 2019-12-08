@@ -1,0 +1,20 @@
+<% include partials/header %>
+<% include partials/menu %>
+
+<div class="main-wrapper">
+    <div class="card-wrapper">
+        <% projects.forEach(project => { %>
+        <div class="card">
+            <div class="card-header">
+                Project <%= project.project_name %>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title"><%= project.project_name %></h5>
+                <p class="card-text">Number of Volunteers: <%= project.num_volunteers %></p>
+                <p class="card-text">Contact: <%= project.contact_name %></p>
+                <a href="/contacts/view/<%= project.contact_id %>" class="btn btn-primary">Go to Contact</a>
+            </div>
+            </div>
+        <% }) %>
+    </div>
+</div>

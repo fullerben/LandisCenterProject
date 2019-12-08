@@ -25,7 +25,7 @@
                 </div>
                 <div class="card-body">
                     <h5 class="card-title"><%= event.event_name %></h5>
-                    <a href="/contacts/<%= event.contact_email %>" class="btn btn-primary">Go to Contact</a>
+                    <a href="/contacts/view/<%= event.contact_id %>" class="btn btn-primary">Go to Contact</a>
                 </div>
                 <div class="card-footer text-muted">
                     Happens on <%= event.event_date %>
