@@ -56,8 +56,9 @@ router.get('/view/:id', async (req, res) => {
     const id = req.params.id
     const organization = await db.getOrganizationById(id)
     const contacts = await db.getOrganizationContacts(id)
+    const actions = await db.getPartnerActions(id)
     const allcontacts = await db.getContacts()
-    res.render('vieworganization', { organization: organization.rows[0], contacts: contacts.rows, allContacts:allcontacts.rows })
+    res.render('vieworganization', { organization: organization.rows[0], contacts: contacts.rows, allContacts:allcontacts.rows, actions: actions.rows })
 })
 
 router.post('/contacts/remove/:contact/:organization', async (req, res) => {

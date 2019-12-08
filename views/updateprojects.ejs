@@ -13,4 +13,16 @@
         </div>
         <button class="btn btn-primary" type="submit">Update Project</button>
       </form>
+      <h5 class="card-text">Actions:</h5>
+      <ul class="list-group">
+              <% actions.forEach(action => { %>
+                  <% if(!action.done) { %>
+                      <li class="list-group-item list-group-item-success"> <%= action.content %> <b class = "mb2"> 
+                          Due Date: <%= action.due_date %> </b> <a href="/complete/<%= action.action_id %>" class="card-link mark-as-done" style= "float: right" id="<%= action.action_id %>">Mark as Done</a></li>
+                  <% } %>
+                  <% if(action.done) { %>
+                      <li class="list-group-item list-group-item-danger"> <%= action.content %></li>
+                  <% } %>
+              <% }) %>
+      </ul>
 </div>
