@@ -34,7 +34,7 @@ module.exports = {
         return queryTemplate('select * from volunteerevents join contacts on volunteerevents.contact_email=contacts.email where volunteerevents.id=$1', [id])
     },
     findVolunteerEvents: (query) => {
-        return queryTemplate(`select event_name, description, event_date, num_volunteers, student_org, coordinator, contact_email, a.id as contact_id, b.id as coordinator_id from volunteerEvents left join contacts as a on a.email=volunteerevents.contact_email left join contacts as b on b.name=volunteerevents.coordinator where event_name like '%${query}%' order by event_name`)
+        return queryTemplate(`select event_name, description, event_date, num_volunteers, student_org, coordinator, contact_email, a.id as contact_id, b.id as coordinator_id from volunteerEvents left join contacts as a on a.email=volunteerevents.contact_email left join contacts as b on b.name=volunteerevents.coordinator where event_name ilike '%${query}%' order by event_name`)
     },
     getUpcomingVolunteerEventsWithContact: () => {
         return queryTemplate(`select event_name, contacts.name, contact_email, id as contact_id, TO_CHAR(event_date :: DATE, 'Mon dd, yyyy') as event_date from volunteerevents join contacts on volunteerevents.contact_email=contacts.email order by event_date limit 5`)
@@ -219,5 +219,11 @@ module.exports = {
     },
     addUser: (user) => {
         return queryTemplate('insert into users (username, password, name, email, admin) values($1,$2,$3,$4,$5)', [user.username, user.password, user.name, user.email, false])
+    },
+    getPartnerActions: (id) => {
+        return queryTemplate('select actions.content, actions.due_date from actions, partneractions, partnerships, organizations where organizations.id = $1 AND actions.action_id = partneractions.action_id AND partneractions.partnership = partnerships.partnership_name AND partnerships.partner_organization = organizations.organization_name', [id])
+    },
+    getProjectActions: (id) => {
+        return queryTemplate('select actions.content, actions.due_date from actions, projectactions, projects where organizations.id = $1 AND actions.action_id = partneractions.action_id AND projectactions.project = projects.project_name', [id])
     }
 }

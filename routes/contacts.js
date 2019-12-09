@@ -21,7 +21,7 @@ router.get('/all', auth.authenticateUser, async (req, res) => {
     } else {
         contacts = await db.getContactsUsingLIKEName(req.query.search)
     }
-    res.render('contactsName', { contacts: contacts.rows })
+    res.render('searchContacts', { contacts: contacts.rows })
 })
 
 router.get('/faculty', async (req, res) => {
@@ -63,8 +63,6 @@ router.get('/search/name', async (req, res) => {
     if (contact === "") {
         contacts = await db.getContacts()
     }
-    contacts = await db.getContactsUsingLIKEName(contact)
-    res.render('searchContacts', { contacts: contacts.rows })
     contacts = await db.getContactUsingLikeName(contact)
     res.render('searchContacts', { contacts: contacts.rows })
 })
