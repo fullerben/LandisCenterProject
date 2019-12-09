@@ -109,8 +109,8 @@ module.exports = {
     getMostRecentProjectActions: () => {
         return queryTemplate("select actions.action_id, project_name, TO_CHAR(due_date :: DATE, 'Mon dd, yyyy') as due_date, content from projectactions join actions on actions.action_id=projectactions.action_id join projects on project=project_name where done=false order by due_date limit 5")
     },
-    insertFacultyContacts: (facultycontacts) => {
-        return queryTemplate('insert into facultycontacts values($1,$2)', [facultycontacts.email, facultycontacts.department])
+    insertFacultyContacts: (email, department) => {
+        return queryTemplate('insert into facultycontacts (email, department) values($1,$2)', [email, department])
     },
     insertVolunteerPrograms: (volunteerprograms) => {
         return queryTemplate('insert into volunteerprograms values($1,$2,$3,$4)', [volunteerprograms.program_id, volunteerprograms.host_organization, volunteerprograms.partner_organization, volunteerprograms.contact_email])

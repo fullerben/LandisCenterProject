@@ -10,7 +10,8 @@ const scrubContact = (contact) => {
         email: contact.email,
         phone: contact.phone.replace(/-/g, ''),
         secondary_phone: contact.secondary_phone === '' ? null : contact.secondary_phone,
-        extension: contact.extension === '' ? null : contact.extension
+        extension: contact.extension === '' ? null : contact.extension,
+        department: contact.department
     }
 }
 
@@ -35,11 +36,13 @@ router.get('/add', auth.authenticateUser, (req, res) => {
 
 router.post('/add', auth.authenticateUser, async (req, res) => {
     const contact = scrubContact(req.body)
+    console.log(contact)
     await db.insertContact(contact)
     if(contact.department !== '') {
+        console.log(contact.email, contact.department)
         await db.insertFacultyContacts(contact.email, contact.department)
     }
-    res.redirect('/contacts/add')
+    res.redirect('/contacts/all')
 })
 
 router.get('/search', auth.authenticateUser, async (req, res) => {
