@@ -30,6 +30,9 @@ module.exports = {
     getVolunteerEvents: () => {
     	return queryTemplate('select event_name, description, event_date, num_volunteers, student_org, coordinator, contact_email, a.id as contact_id, b.id as coordinator_id from volunteerEvents left join contacts as a on a.email=volunteerevents.contact_email left join contacts as b on b.name=volunteerevents.coordinator order by event_name')
     },
+    getVolunteerEventById: (id) => {
+        return queryTemplate('select * from volunteerevents join contacts on volunteerevents.contact_email=contacts.email where volunteerevents.id=$1', [id])
+    },
     findVolunteerEvents: (query) => {
         return queryTemplate(`select event_name, description, event_date, num_volunteers, student_org, coordinator, contact_email, a.id as contact_id, b.id as coordinator_id from volunteerEvents left join contacts as a on a.email=volunteerevents.contact_email left join contacts as b on b.name=volunteerevents.coordinator where event_name like '%${query}%' order by event_name`)
     },
@@ -37,8 +40,15 @@ module.exports = {
         return queryTemplate(`select event_name, contacts.name, contact_email, id as contact_id, TO_CHAR(event_date :: DATE, 'Mon dd, yyyy') as event_date from volunteerevents join contacts on volunteerevents.contact_email=contacts.email order by event_date limit 5`)
     },
     getProjects: () => {
-    	return queryTemplate('select id as contact_id, project_name, num_students, contacts.name as contact_name from projects join contacts on projects.contact_email=contacts.email')
-    },  
+    	return queryTemplate('select contacts.id as contact_id, projects.id as id, project_name, num_students, contacts.name as contact_name from projects join contacts on projects.contact_email=contacts.email')
+    },
+    getProjectsLIKESearch: (query) => {
+        let likeproj = '%' + query + '%';
+        return queryTemplate('select * from projects where project_name ilike $1', [likeproj])
+    },
+    getProjectById: (id) => {
+        return queryTemplate('select * from projects where id=$1', [id])
+    },
     getContactsWithOrganizations: () => {
         return queryTemplate('select * from contacts left outer join organizationcontacts on contacts.email=organizationcontacts.contact_email order by name')
     },
@@ -183,8 +193,8 @@ module.exports = {
     updateExtension: (email, new_ext) => {
         return queryTemplate( 'UPDATE Contacts SET extension = $1 WHERE email = $2', [new_ext, email] )
     },
-    updateProjectStudents: (project_name, new_num) => {
-        return queryTemplate( 'UPDATE Projects SET num_students = $1 WHERE project_name = $2', [new_num, project_name ] )
+    updateProject: (project) => {
+        return queryTemplate('UPDATE Projects SET num_students=$1, project_name=$2, contact_email=(select email from contacts where name=$3) WHERE project_name = $2', [project.num_students, project.project_name, project.contact_name] )
     },
     updateVolunteerEventsStudents: (event_name, event_date, new_num) => {
         return queryTemplate( 'UPDATE VolunteerEvents SET num_students = $1 WHERE event_name = $2 AND event_date = $3', [new_num, event_name, event_date] )

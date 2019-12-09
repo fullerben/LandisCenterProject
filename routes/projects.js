@@ -24,15 +24,25 @@ router.get('/all', async (req, res) => {
     res.render('searchprojects', { projects: projects.rows })
 })
 
-router.get('/update', (req, res) => {
-    res.render('updateproject')
+router.get('/update/:id', async (req, res) => {
+    const project = await db.getProjectById(req.params.id)
+    const contacts = await db.getContacts()
+    const current = await db.getContact(project.rows[0].contact_email)
+    res.render('updateprojects', { project: project.rows[0], contacts: contacts.rows, current:current.rows[0] })
 })
 
 router.post('/update', async (req, res) => {
     const project = req.body
-    const num_students = req.body
-    await db.updateProjectStudents(project, num_students)
-    res.redirect('/')
+    await db.updateProject(project)
+    res.redirect('back')
+})
+
+router.post('/search', async (req, res) => {
+    const query = req.body.project_name
+    let projects
+    if(query === '') projects = await db.getProjects()
+    else projects = await db.getProjectsLIKESearch(query)
+    res.render('searchprojects', { projects: projects.rows })
 })
 
 module.exports = router

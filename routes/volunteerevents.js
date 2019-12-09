@@ -29,4 +29,13 @@ router.post('/all', async (req, res) => {
     res.render('volunteerevents', {events: events.rows})
 })
 
+router.get('/update/:id', async (req, res) => {
+    const event = await db.getVolunteerEventsById(req.params.id)
+    const current_coordinator_name = event.rows[0].coordinator
+    const current_organization = event.rows[0].student_org
+    const contacts = await db.getContacts()
+    res.render('updatevolunteerevents', {contacts:contacts, current_coordinator_name: current_coordinator_name, current_organization: current_organization})
+
+})
+
 module.exports = router
