@@ -42,11 +42,11 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // Use express sessions to preserve login state
-// app.use(session({
-//    // secret: process.env.SECRET_KEY,
-//     resave: false,
-//     saveUninitialized: true
-// }))
+app.use(session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: true
+}))
 
 // Initialize passport
 app.use(passport.initialize())

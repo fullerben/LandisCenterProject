@@ -1,14 +1,15 @@
 const express = require('express')
       router = express.Router()
       db  = require('../db.js')
+      auth = require('../auth')
 
-router.get('/add', async (req, res) => {
+router.get('/add', auth.authenticateUser, async (req, res) => {
     const projects = await db.getProjects();
     const partnerships = await db.getPartnerships()
     res.render('addaction', { projects: projects.rows, partnerships: partnerships.rows })
 })
 
-router.post('/add', async (req, res) => {
+router.post('/add', auth.authenticateUser, async (req, res) => {
     let action = req.body
     await db.insertActions({
         due_date: action.due_date,
@@ -32,12 +33,12 @@ router.post('/add', async (req, res) => {
     res.redirect('/')
 })
 
-router.post('/complete/:id', async (req, res) => {
+router.post('/complete/:id', auth.authenticateUser, async (req, res) => {
     await db.setActionDone(req.params.id)
     res.sendStatus(200)
 })
 
-router.get('/view', async (req, res) => {
+router.get('/view', auth.authenticateUser, async (req, res) => {
     const projectActions = await db.getAllProjectActions()
     console.log(projectActions.rows)
     const partnerActions = await db.getAllPartnerActions()

@@ -10,7 +10,7 @@ const express = require('express')
 //     res.render('displayorganization', { organization: organization.rows[0], contacts: contacts.rows })
 // })
 
-router.post('/search', async (req, res) => {
+router.post('/search',  auth.authenticateUser, async (req, res) => {
     const org = req.body.org
     let orgs;
     if (org == "") {
@@ -20,39 +20,39 @@ router.post('/search', async (req, res) => {
     res.render('searchOrg', { orgs: orgs.rows })
 })
 
-router.get('/add', (req, res) => {
+router.get('/add', auth.authenticateUser, (req, res) => {
     res.render('insertorganizations')
 })
 
-router.get('/', async (req, res) => {
+router.get('/', auth.authenticateUser, async (req, res) => {
     const orgs = await db.getOrganizations()
     res.render('searchOrg', {orgs: orgs.rows })
 })
 
-router.get('/search', (req, res) => {
+router.get('/search', auth.authenticateUser, (req, res) => {
     res.render('insertorganizations')
 })
 
-router.post('/add', async (req, res) => {
+router.post('/add', auth.authenticateUser, async (req, res) => {
     let organization = req.body
     organization.organization_type = organization.organization_type.toLowerCase()
     await db.insertOrganizations(organization)
     res.redirect('/organizations')
 })
 
-router.get('/update/:id', async (req, res) => {
+router.get('/update/:id', auth.authenticateUser, async (req, res) => {
     const org = await db.getOrganizationById(req.params.id)
     res.render('updateorganization', {organization: org.rows[0]})
 })
 
-router.post('/update', async (req, res) => {
+router.post('/update', auth.authenticateUser, async (req, res) => {
     let organization = req.body
     organization.organization_type = req.body.organization_type.toLowerCase()
     await db.updateOrganization(organization)
     res.redirect('/')
 })
 
-router.get('/view/:id', async (req, res) => {
+router.get('/view/:id', auth.authenticateUser, async (req, res) => {
     const id = req.params.id
     const organization = await db.getOrganizationById(id)
     const contacts = await db.getOrganizationContacts(id)
@@ -61,12 +61,12 @@ router.get('/view/:id', async (req, res) => {
     res.render('vieworganization', { organization: organization.rows[0], contacts: contacts.rows, allContacts:allcontacts.rows, actions: actions.rows })
 })
 
-router.post('/contacts/remove/:contact/:organization', async (req, res) => {
+router.post('/contacts/remove/:contact/:organization', auth.authenticateUser, async (req, res) => {
     await db.removeOrganizationContact(req.params.contact, req.params.organization)
     res.redirect('back')
 })
 
-router.post('/contacts/add/:org_id', async (req,res) => {
+router.post('/contacts/add/:org_id', auth.authenticateUser, async (req,res) => {
     await db.addOrganizationContact(req.body.contact_name, req.params.org_id)
     res.redirect('back')
 })

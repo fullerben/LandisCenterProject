@@ -25,7 +25,7 @@ router.get('/all', auth.authenticateUser, async (req, res) => {
     res.render('searchContacts', { contacts: contacts.rows })
 })
 
-router.get('/faculty', async (req, res) => {
+router.get('/faculty', auth.authenticateUser, async (req, res) => {
     const contacts = await db.getFacultyContacts()
     res.render('searchFaculty', { contacts: contacts.rows })
 })
@@ -48,7 +48,7 @@ router.get('/search', auth.authenticateUser, async (req, res) => {
     res.render('search', { contacts: contacts.rows })
 })
 
-router.post('/search/name', async (req, res) => {
+router.post('/search/name', auth.authenticateUser, async (req, res) => {
     const contact = req.body.name
     let contacts;
     if (contact == "") {
@@ -58,7 +58,7 @@ router.post('/search/name', async (req, res) => {
     res.render('search', { contacts: contacts.rows })
 })
 
-router.get('/search/name', async (req, res) => {
+router.get('/search/name', auth.authenticateUser, async (req, res) => {
     const contact = req.query.name
     let contacts
     if (contact === "") {
@@ -68,7 +68,7 @@ router.get('/search/name', async (req, res) => {
     res.render('searchContacts', { contacts: contacts.rows })
 })
 
-router.post('/search/faculty', async (req, res) => {
+router.post('/search/faculty', auth.authenticateUser, async (req, res) => {
     const contact = req.body.department
     let contacts;
     if (contact == "") {
@@ -78,7 +78,7 @@ router.post('/search/faculty', async (req, res) => {
     res.render('searchFaculty', { contacts: contacts.rows })
 })
 
-router.get('/view/:id', async (req, res) => {
+router.get('/view/:id', auth.authenticateUser, async (req, res) => {
     const contact = await db.getContactById(req.params.id)
     res.render('viewcontact', {contact: contact.rows[0]})
 })
