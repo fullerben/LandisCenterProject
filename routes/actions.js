@@ -24,10 +24,9 @@ router.post('/add', auth.authenticateUser, async (req, res) => {
         })
     }
     if(action.partner_name !== 'None') {
-        const email = await db.getContactEmail(action.partner_name)
         db.insertPartnerAction({
             action_id: id.rows[0].action_id,
-            partner_name: email.rows[0].email
+            partner_name: action.partner_name
         })
     }
     res.redirect('/')
