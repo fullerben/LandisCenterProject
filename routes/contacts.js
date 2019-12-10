@@ -54,7 +54,7 @@ router.post('/search/name', auth.authenticateUser, async (req, res) => {
     if (contact == "") {
         contacts = db.getContacts();
     }
-    contacts = await db.getContactsUsingLIKEOrganization(contact)
+    contacts = await db.getContactsUsingLIKEName(contact)
     res.render('search', { contacts: contacts.rows })
 })
 
