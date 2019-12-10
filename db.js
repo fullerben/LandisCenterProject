@@ -56,7 +56,7 @@ module.exports = {
         return queryTemplate('select * from contacts order by name')
     },
     getFacultyContacts: () => {
-        return queryTemplate('select contacts.email, contacts.name, facultycontacts.department  from facultycontacts, contacts where contacts.email = facultycontacts.email')
+        return queryTemplate('select contacts.email, contacts.name, facultycontacts.department, contacts.id from facultycontacts, contacts where contacts.email = facultycontacts.email')
     },
     getFacultyContactUsingDepartment: (department) => {
         let likename = '%' + department + '%';
@@ -192,6 +192,9 @@ module.exports = {
     },
     updateExtension: (email, new_ext) => {
         return queryTemplate( 'UPDATE Contacts SET extension = $1 WHERE email = $2', [new_ext, email] )
+    },
+    updateFacultyDepartment: (department, email) => {
+        return queryTemplate('update facultycontacts set department=$1 where email=$2', [department, email])
     },
     updateProject: (project) => {
         return queryTemplate('UPDATE Projects SET num_students=$1, project_name=$2, contact_email=(select email from contacts where name=$3) WHERE project_name = $2', [project.num_students, project.project_name, project.contact_name] )

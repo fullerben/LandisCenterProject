@@ -26,8 +26,6 @@
         <% if(contact.secondary_phone !== null) { %>
         <p class="card-text">Secondary Phone: <%= contact.secondary_phone %></p>
         <% } %>
-        <p class="card-text">Organization: <%= contact.organization_name %></p>
-        <a href="#"" class=" btn btn-primary">Go to Organization</a>
         <a href="/contacts/view/<%= contact.id%>" class=" btn btn-primary">View Contact Details</a>
       </div>
     </div>

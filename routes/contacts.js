@@ -36,10 +36,8 @@ router.get('/add', auth.authenticateUser, (req, res) => {
 
 router.post('/add', auth.authenticateUser, async (req, res) => {
     const contact = scrubContact(req.body)
-    console.log(contact)
     await db.insertContact(contact)
     if(contact.department !== '') {
-        console.log(contact.email, contact.department)
         await db.insertFacultyContacts(contact.email, contact.department)
     }
     res.redirect('/contacts/all')
@@ -97,6 +95,7 @@ router.post('/update', auth.authenticateUser, async (req, res) => {
     if(contact.secondary_phone !== null) await db.updateContactSecondaryPhone(contact.email, contact.secondary_phone)
     if(contact.extension !== null) await db.updateExtension(contact.email, contact.extension)
     if(contact.name !== null) await db.updateContactName(contact.email, contact.name)
+    if(contact.department !== null) await db.updateContactDepartment(contact.department, contact.email)
     res.redirect('/contacts/all')
 })
 
