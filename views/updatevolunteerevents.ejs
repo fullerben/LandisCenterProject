@@ -1,0 +1,61 @@
+<% include partials/header %>
+<% include partials/menu %>
+
+<div class="main-wrapper" style="display: flex; justify-content: center;">
+    <form action="/projects/update" method="post" style="width:40%;">
+        <div class="form-group">
+            <label for="name">Event Name:</label>
+            <input type="text" class="form-control" id="name" name="event_name" value="<%= event.event_name %>">
+        </div>
+        <div class="form-group">
+            <label for="date">Due Date: (mm/dd/yyyy)</label>
+            <input type="text" class="form-control" id="date" name="event_date" value="<%= event.due_date %>">
+        </div>
+        <div class="form-group">
+            <label for="content">Description:</label>
+            <textarea class="form-control" id="content" name="description" rows="3" value="<%= event.description %>"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="phone">Number of Volunteers:</label>
+            <input type="number" class="form-control" id="phone" name="num_volunteers" value="<%= event.num_volunteers %>">
+        </div>
+        <div class="form-group">
+            <label for="select-partner">Event Contact:</label>
+            <select class="form-control" name="event_contact_name" id="select-project">
+                <% contacts.forEach(contact => { %>
+                    <% if(contact.name === current_contact.name) { %>
+                        <option selected><%= contact.name %></option>
+                      <% } else { %>
+                      <option><%= contact.name %></option>
+                      <% } %>
+                <% }) %>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="select-partner">Event Coordinator:</label>
+            <select class="form-control" name="event_coordinator_name" id="select-project">
+                <% contacts.forEach(contact => { %>
+                    <% if(contact.name === current_coordinator.name) { %>
+                        <option selected><%= contact.name %></option>
+                      <% } else { %>
+                      <option><%= contact.name %></option>
+                    <% } %>
+                <% }) %>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="select-project">Partner Organization:</label>
+            <select class="form-control" name="student_org" id="select-project">
+                <% organizations.forEach(organization => { %>
+                    <% if(organization.organization_name === current_organization.organization_name) { %>
+                        <option selected><%= organization.organization_name %></option>
+                      <% } else { %>
+                      <option><%= organization.organization_name %></option>
+                    <% } %>
+                <% }) %>
+            </select>
+        </div>
+        <button class="btn btn-primary" type="submit">Update Project</button>
+        <a href="/projects/all" class="btn btn-primary">Cancel</button>
+      </form>
+</div>

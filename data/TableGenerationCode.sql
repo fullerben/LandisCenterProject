@@ -30,6 +30,7 @@ CREATE TABLE Projects (
     contact_email varchar(255) NOT NULL,
     project_name varchar(255) NOT NULL,
     num_students int,
+    id serial,
     PRIMARY KEY (project_name),
     FOREIGN KEY (contact_email) REFERENCES Contacts(email)
 );

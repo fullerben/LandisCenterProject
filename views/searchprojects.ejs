@@ -2,19 +2,29 @@
 <% include partials/menu %>
 
 <div class="main-wrapper">
-    <div class="card-wrapper">
-        <% projects.forEach(project => { %>
-        <div class="card">
-            <div class="card-header">
-                Project <%= project.project_name %>
+  <div style="display: flex; justify-content: center;">
+    <form action="/projects/search" method="post" style="width:40%;">
+      <div class="form-group">
+        <label for="name">Project:</label>
+        <input type="text" class="form-control" id="org" name="project_name" placeholder="Project Name">
+      </div>
+      <button class="btn btn-primary" type="submit">Find Project</button>
+    </form>
+  </div>
+  <div class="card-wrapper" style="text-align: center; width: 40%; margin: auto">
+    <% projects.forEach(project => { %>
+      <div class="card">
+          <div class="card-header">
+              Project <%= project.project_name %>
+          </div>
+          <div class="card-body">
+              <h5 class="card-title"><%= project.project_name %></h5>
+              <p class="card-text">Number of Volunteers: <%= project.num_volunteers %></p>
+              <p class="card-text">Contact: <%= project.contact_name %></p>
+              <a href="/contacts/view/<%= project.contact_id %>" class="btn btn-primary">Go to Contact</a>
+              <a href="/projects/update/<%= project.id %>" class="btn btn-primary">Update Project</a>
             </div>
-            <div class="card-body">
-                <h5 class="card-title"><%= project.project_name %></h5>
-                <p class="card-text">Number of Volunteers: <%= project.num_volunteers %></p>
-                <p class="card-text">Contact: <%= project.contact_name %></p>
-                <a href="/contacts/view/<%= project.contact_id %>" class="btn btn-primary">Go to Contact</a>
-            </div>
-            </div>
-        <% }) %>
-    </div>
+          </div>
+      <% }) %>
+  </div>
 </div>
